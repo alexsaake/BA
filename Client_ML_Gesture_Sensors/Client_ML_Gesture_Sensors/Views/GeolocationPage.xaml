@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:Client_ML_Gesture_Sensors.ViewModels"
+             x:Class="Client_ML_Gesture_Sensors.Views.GeolocationPage">
+    <ContentPage.BindingContext>
+        <model:GeolocationViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Center">
+            <Label Text="Geolocation"/>
+            <Label Text="{Binding GeolocationData.Latitude, StringFormat='Latitude: {0:N2}'}"/>
+            <Label Text="{Binding GeolocationData.Longitude, StringFormat='Longitude: {0:N2}'}"/>
+            <Label Text="{Binding GeolocationData.Altitude, StringFormat='Altitude: {0:N2}'}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

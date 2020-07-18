@@ -1,0 +1,3 @@
+{
+	"connectionString": "Server=localhost,1433;User ID=mladmin;Password=mlpassword;"
+}

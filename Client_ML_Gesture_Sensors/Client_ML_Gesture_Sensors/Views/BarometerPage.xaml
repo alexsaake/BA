@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:Client_ML_Gesture_Sensors.ViewModels"
+             x:Class="Client_ML_Gesture_Sensors.Views.BarometerPage">
+    <ContentPage.BindingContext>
+        <model:BarometerViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Center">
+            <Label Text="Pressure"/>
+            <Label Text="{Binding BarometerData.Pressure, StringFormat='Pressure: {0:N2}'}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,56 @@
+﻿<Project Sdk="Tizen.NET.Sdk/1.0.9">
+
+  <!-- Property Group for Tizen40 Project -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>tizen40</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+
+  
+  <ItemGroup>
+    <Folder Include="res\" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1143-pre1" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Client_ML_Gesture_Sensors\Client_ML_Gesture_Sensors.csproj" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <Compile Update="lib\Views\HeartRateMonitorPage.xaml.cs">
+      <DependentUpon>HeartRateMonitorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="lib\Views\MainPage.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <EmbeddedResource Update="lib\Views\LightSensorPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <None Update="PulsometerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+  
+
+</Project>
