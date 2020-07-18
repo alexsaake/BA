@@ -1,5 +1,6 @@
-﻿using Client_ML_Gesture_Sensors.ViewModels;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+
+using Client_ML_Gesture_Sensors.ViewModels;
 
 namespace Client_ML_Gesture_Sensors.Views
 {
@@ -13,7 +14,7 @@ namespace Client_ML_Gesture_Sensors.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ((GyroscopeViewModel)BindingContext).StopCommand.Execute(null);
+            ((GyroscopeViewModel)BindingContext).StartCommand.Execute(null);
         }
 
         protected override void OnDisappearing()

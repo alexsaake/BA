@@ -12,6 +12,7 @@ namespace Client_ML_Gesture_Sensors.Commands
         {
             DoWork = work;
         }
+
         public bool CanExecute(object parameter)
         {
             return true;

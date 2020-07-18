@@ -1,6 +1,7 @@
 ﻿using Xamarin.Forms;
 
 using Client_ML_Gesture_Sensors.ViewModels;
+
 namespace Client_ML_Gesture_Sensors.Views
 {
     public partial class GeolocationPage : ContentPage
