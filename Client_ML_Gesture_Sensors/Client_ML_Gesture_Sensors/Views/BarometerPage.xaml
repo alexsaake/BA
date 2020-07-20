@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center">
             <Label Text="Pressure"/>
-            <Label Text="{Binding BarometerData.Pressure, StringFormat='Pressure: {0:N2}'}"/>
+            <Label Text="{Binding Barometer.Pressure, StringFormat='Pressure: {0:N2} hPa'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

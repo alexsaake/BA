@@ -1,28 +1,34 @@
 ﻿using System;
 
 using Client_ML_Gesture_Sensors.Models;
-using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Services;
+using Client_ML_Gesture_Sensors.Commands;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class AccelerometerViewModel : BaseViewModel
     {
-        AccelerometerService AccelerometerService;
+        AccelerometerService accelerometerService;
+
+        private Accelerometer accelerometer;
+
+        public Accelerometer Accelerometer
+        {
+            get { return accelerometer; }
+            set { accelerometer = value; OnPropertyChanged(); }
+        }
+
         public AccelerometerViewModel()
         {
-            AccelerometerService = new AccelerometerService();
-            AccelerometerData = new Accelerometer();
+            accelerometerService = new AccelerometerService();
+            LoadData();
             startCommand = new RelayCommand(Start);
             stopCommand = new RelayCommand(Stop);
         }
 
-        private Accelerometer accelerometerData;
-
-        public Accelerometer AccelerometerData
+        private void LoadData()
         {
-            get { return accelerometerData; }
-            set { accelerometerData = value; OnPropertyChanged(); }
+            Accelerometer = accelerometerService.Get();
         }
 
         private RelayCommand startCommand;
@@ -36,7 +42,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         {
             try
             {
-                AccelerometerService.Subscribe(AccelerometerData);
+                accelerometerService.Subscribe();
             }
             catch (Exception ex)
             {
@@ -55,7 +61,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         {
             try
             {
-                AccelerometerService.Unsubscribe(AccelerometerData);
+                accelerometerService.Unsubscribe();
             }
             catch(Exception ex)
             {

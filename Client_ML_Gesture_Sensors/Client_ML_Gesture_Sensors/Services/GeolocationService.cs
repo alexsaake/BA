@@ -1,6 +1,7 @@
-﻿using Xamarin.Essentials;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 using Client_ML_Gesture_Sensors.Models;
 
@@ -8,14 +9,29 @@ namespace Client_ML_Gesture_Sensors.Services
 {
     public class GeolocationService
     {
-        public async Task GetGeolocationAsync(Models.Geolocation geolocation)
+        private bool TimerTick;
+        private static Models.Geolocation geolocation;
+
+        public GeolocationService()
+        {
+            geolocation = new Models.Geolocation();
+            TimerTick = false;
+        }
+
+        public Models.Geolocation Get()
+        {
+            return geolocation;
+        }
+
+        private async Task GetGeolocationAsync()
         {
             try
             {
                 var location = await Xamarin.Essentials.Geolocation.GetLocationAsync(new GeolocationRequest
                 {
-                    DesiredAccuracy = GeolocationAccuracy.Low,
-                    Timeout = TimeSpan.FromSeconds(30)
+                    DesiredAccuracy = GeolocationAccuracy.Best,
+                    Timeout = TimeSpan.FromSeconds(30),
+                    
                 });
 
                 if (location != null)
@@ -29,6 +45,24 @@ namespace Client_ML_Gesture_Sensors.Services
             {
                 
             }
+        }
+
+        private bool OnTimerTick()
+        {
+            _ = GetGeolocationAsync();
+
+            return TimerTick;
+        }
+
+        public void Subscribe()
+        {
+            TimerTick = true;
+            Device.StartTimer(TimeSpan.FromMilliseconds(5000), OnTimerTick);
+        }
+
+        public void Unsubscribe()
+        {
+            TimerTick = false;
         }
     }
 }

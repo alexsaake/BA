@@ -9,9 +9,9 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center">
             <Label Text="Accelerometer"/>
-            <Label Text="{Binding AccelerometerData.X, StringFormat='X: {0:N2}'}"/>
-            <Label Text="{Binding AccelerometerData.Y, StringFormat='Y: {0:N2}'}"/>
-            <Label Text="{Binding AccelerometerData.Z, StringFormat='Z: {0:N2}'}"/>
+            <Label Text="{Binding Accelerometer.X, StringFormat='X: {0:N2} m/s²'}"/>
+            <Label Text="{Binding Accelerometer.Y, StringFormat='Y: {0:N2} m/s²'}"/>
+            <Label Text="{Binding Accelerometer.Z, StringFormat='Z: {0:N2} m/s²'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

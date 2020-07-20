@@ -1,13 +1,10 @@
-﻿using Client_ML_Gesture_Sensors.Views;
-
-using System;
-
+﻿using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+
+using Client_ML_Gesture_Sensors.Views;
 
 namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
     {
         public MainPage()
@@ -15,34 +12,14 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views
             InitializeComponent();
         }
 
-        async void OnAccelerometerClicked(object sender, EventArgs e)
+        async void OnGesturesClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new AccelerometerPage());
+            await Navigation.PushAsync(new GesturePage());
         }
 
-        async void OnBarometerClicked(object sender, EventArgs e)
+        async void OnDeviceSensorsClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BarometerPage());
-        }
-
-        async void OnGeolocationClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new GeolocationPage());
-        }
-
-        async void OnGyroscopeClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new GyroscopePage());
-        }
-
-        async void OnLightSensorClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new LightSensorPage());
-        }
-
-        async void OnHeartRateMonitorClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new HeartRateMonitorPage());
+            await Navigation.PushAsync(new DeviceSensorsPage());
         }
     }
 }

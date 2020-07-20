@@ -1,46 +1,76 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
 
 namespace Client_ML_Gesture_Sensors.Models
 {
-    public class Gesture
+    public class Gesture : BaseModel
     {
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
+        private string label;
 
-        [JsonPropertyName("fixedAcidity")]
-        public string FixedAcidity { get; set; }
+        public string Label
+        {
+            get { return label; }
+            set
+            {
+                label = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonPropertyName("volatileAcidity")]
-        public string VolatileAcidity { get; set; }
+        private bool canRecord;
 
-        [JsonPropertyName("citricAcid")]
-        public string CitricAcid { get; set; }
+        public bool CanRecord
+        {
+            get { return canRecord; }
+            set
+            {
+                canRecord = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonPropertyName("residualSugar")]
-        public string ResidualSugar { get; set; }
+        private bool isAvailable;
 
-        [JsonPropertyName("chlorides")]
-        public string Chlorides { get; set; }
+        public bool IsAvailable
+        {
+            get { return isAvailable; }
+            set
+            {
+                isAvailable = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonPropertyName("freeSulfurDioxide")]
-        public string FreeSulfurDioxide { get; set; }
+        private bool isNotSaved;
 
-        [JsonPropertyName("totalSulforDioxide")]
-        public string TotalSulforDioxide { get; set; }
+        public bool IsNotSaved
+        {
+            get { return isNotSaved; }
+            set
+            {
+                isNotSaved = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonPropertyName("density")]
-        public string Density { get; set; }
+        private List<GesturePoint> gesturePointList;
 
-        [JsonPropertyName("ph")]
-        public string Ph { get; set; }
+        public List<GesturePoint> GesturePointList
+        {
+            get { return gesturePointList; }
+            set
+            {
+                gesturePointList = value;
+                OnPropertyChanged();
+            }
+        }
 
-        [JsonPropertyName("sulphates")]
-        public string Sulphates { get; set; }
+        public Gesture()
+        {
+            CanRecord = true;
+            IsAvailable = false;
+            IsNotSaved = false;
 
-        [JsonPropertyName("alcohol")]
-        public string Alcohol { get; set; }
-
-        [JsonPropertyName("quality")]
-        public string Quality { get; set; }
+            GesturePointList = new List<GesturePoint>();
+        }
     }
 }

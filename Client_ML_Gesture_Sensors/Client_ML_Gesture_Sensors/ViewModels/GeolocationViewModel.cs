@@ -1,27 +1,34 @@
 ﻿using System;
 
 using Client_ML_Gesture_Sensors.Models;
-using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Services;
+using Client_ML_Gesture_Sensors.Commands;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class GeolocationViewModel : BaseViewModel
     {
-        GeolocationService GeolocationService;
-        public GeolocationViewModel()
+        GeolocationService geolocationService;
+
+        private Geolocation geolocation;
+
+        public Geolocation Geolocation
         {
-            GeolocationService = new GeolocationService();
-            GeolocationData = new Geolocation();
-            startCommand = new RelayCommand(Start);
+            get { return geolocation; }
+            set { geolocation = value; OnPropertyChanged(); }
         }
 
-        private Geolocation geolocationData;
-
-        public Geolocation GeolocationData
+        public GeolocationViewModel()
         {
-            get { return geolocationData; }
-            set { geolocationData = value; OnPropertyChanged(); }
+            geolocationService = new GeolocationService();
+            LoadData();
+            startCommand = new RelayCommand(Start);
+            stopCommand = new RelayCommand(Stop);
+        }
+
+        private void LoadData()
+        {
+            Geolocation = geolocationService.Get();
         }
 
         private RelayCommand startCommand;
@@ -35,7 +42,26 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         {
             try
             {
-                _ = GeolocationService.GetGeolocationAsync(GeolocationData);
+                geolocationService.Subscribe();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private RelayCommand stopCommand;
+
+        public RelayCommand StopCommand
+        {
+            get { return stopCommand; }
+        }
+
+        void Stop()
+        {
+            try
+            {
+                geolocationService.Unsubscribe();
             }
             catch (Exception ex)
             {

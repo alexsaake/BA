@@ -6,10 +6,21 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 {
     class LightSensorService
     {
-        private Models.LightSensor LightSensor;
+        private static Models.LightSensor lightSensor;
+
+        public LightSensorService()
+        {
+            lightSensor = new Models.LightSensor();
+        }
+
+        public Models.LightSensor Get()
+        {
+            return lightSensor;
+        }
+
         private Sensor.LightSensor _sensor;
 
-        public void Subscribe(Models.LightSensor lightSensor)
+        public void Subscribe()
         {
             if (!Sensor.LightSensor.IsSupported)
                 return;
@@ -19,25 +30,20 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 
             _sensor.DataUpdated += LightSensor_DataUpdated;
             _sensor.Start();
-
-            LightSensor = lightSensor;
         }
 
-        public void Unsubscribe(Models.LightSensor lightSensor)
+        public void Unsubscribe()
         {
             if (!Sensor.LightSensor.IsSupported && !_sensor.IsSensing)
                 return;
 
             _sensor.DataUpdated -= LightSensor_DataUpdated;
             _sensor.Stop();
-            _sensor.Dispose();
-
-            LightSensor = null;
         }
 
         private void LightSensor_DataUpdated(object sender, Sensor.LightSensorDataUpdatedEventArgs e)
         {
-            LightSensor.Level = e.Level;
+            lightSensor.Level = e.Level;
         }
     }
 }

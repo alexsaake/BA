@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center">
             <Label Text="Light Sensor"/>
-            <Label Text="{Binding LightSensorData.Level, StringFormat='Level: {0:N2}'}"/>
+            <Label Text="{Binding LightSensor.Level, StringFormat='Level: {0} lm/m²'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

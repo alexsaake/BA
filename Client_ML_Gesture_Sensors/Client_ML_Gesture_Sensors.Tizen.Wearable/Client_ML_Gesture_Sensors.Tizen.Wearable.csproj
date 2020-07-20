@@ -33,14 +33,17 @@
     <Compile Update="lib\Views\HeartRateMonitorPage.xaml.cs">
       <DependentUpon>HeartRateMonitorPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="lib\Views\MainPage.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="lib\Views\DeviceSensorsPage.xaml.cs">
+      <DependentUpon>DeviceSensorsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   
   <ItemGroup>
     <EmbeddedResource Update="lib\Views\LightSensorPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="lib\Views\MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

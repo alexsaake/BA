@@ -9,9 +9,9 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center">
             <Label Text="Gyroscope"/>
-            <Label Text="{Binding GyroscopeData.X, StringFormat='X: {0:N2}'}"/>
-            <Label Text="{Binding GyroscopeData.Y, StringFormat='Y: {0:N2}'}"/>
-            <Label Text="{Binding GyroscopeData.Z, StringFormat='Z: {0:N2}'}"/>
+            <Label Text="{Binding Gyroscope.X, StringFormat='X: {0:N2} rad/s'}"/>
+            <Label Text="{Binding Gyroscope.Y, StringFormat='Y: {0:N2} rad/s'}"/>
+            <Label Text="{Binding Gyroscope.Z, StringFormat='Z: {0:N2} rad/s'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

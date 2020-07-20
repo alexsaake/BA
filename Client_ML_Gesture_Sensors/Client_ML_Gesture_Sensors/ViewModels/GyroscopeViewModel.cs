@@ -1,28 +1,34 @@
 ﻿using System;
 
 using Client_ML_Gesture_Sensors.Models;
-using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Services;
+using Client_ML_Gesture_Sensors.Commands;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class GyroscopeViewModel : BaseViewModel
     {
-        GyroscopeService GyroscopeService;
+        GyroscopeService gyroscopeService;
+
+        private Gyroscope gyroscope;
+
+        public Gyroscope Gyroscope
+        {
+            get { return gyroscope; }
+            set { gyroscope = value; OnPropertyChanged(); }
+        }
+
         public GyroscopeViewModel()
         {
-            GyroscopeService = new GyroscopeService();
-            GyroscopeData = new Gyroscope();
+            gyroscopeService = new GyroscopeService();
+            LoadData();
             startCommand = new RelayCommand(Start);
             stopCommand = new RelayCommand(Stop);
         }
 
-        private Gyroscope gyroscopeData;
-
-        public Gyroscope GyroscopeData
+        private void LoadData()
         {
-            get { return gyroscopeData; }
-            set { gyroscopeData = value; OnPropertyChanged(); }
+            Gyroscope = gyroscopeService.Get();
         }
 
         private RelayCommand startCommand;
@@ -36,7 +42,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         {
             try
             {
-                GyroscopeService.Subscribe(GyroscopeData);
+                gyroscopeService.Subscribe();
             }
             catch (Exception ex)
             {
@@ -55,7 +61,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         {
             try
             {
-                GyroscopeService.Unsubscribe(GyroscopeData);
+                gyroscopeService.Unsubscribe();
             }
             catch (Exception ex)
             {

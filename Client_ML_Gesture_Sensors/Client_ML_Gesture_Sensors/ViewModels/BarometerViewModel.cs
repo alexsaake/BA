@@ -1,28 +1,34 @@
 ﻿using System;
 
 using Client_ML_Gesture_Sensors.Models;
-using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Services;
+using Client_ML_Gesture_Sensors.Commands;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class BarometerViewModel : BaseViewModel
     {
-        BarometerService BarometerService;
+        BarometerService barometerService;
+
+        private Barometer barometer;
+
+        public Barometer Barometer
+        {
+            get { return barometer; }
+            set { barometer = value; OnPropertyChanged(); }
+        }
+
         public BarometerViewModel()
         {
-            BarometerService = new BarometerService();
-            BarometerData = new Barometer();
+            barometerService = new BarometerService();
+            LoadData();
             startCommand = new RelayCommand(Start);
             stopCommand = new RelayCommand(Stop);
         }
 
-        private Barometer barometerData;
-
-        public Barometer BarometerData
+        private void LoadData()
         {
-            get { return barometerData; }
-            set { barometerData = value; OnPropertyChanged(); }
+            Barometer = barometerService.Get();
         }
 
         private RelayCommand startCommand;
@@ -36,7 +42,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         {
             try
             {
-                BarometerService.Subscribe(BarometerData);
+                barometerService.Subscribe();
             }
             catch (Exception ex)
             {
@@ -55,7 +61,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         {
             try
             {
-                BarometerService.Unsubscribe(BarometerData);
+                barometerService.Unsubscribe();
             }
             catch (Exception ex)
             {

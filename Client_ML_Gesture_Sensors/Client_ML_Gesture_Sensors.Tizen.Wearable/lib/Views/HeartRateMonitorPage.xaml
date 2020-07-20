@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center">
             <Label Text="Heart Rate Monitor"/>
-            <Label Text="{Binding HeartRateMonitorData.HeartRate, StringFormat='Heart Rate: {0:N2}'}"/>
+            <Label Text="{Binding HeartRateMonitor.HeartRate, StringFormat='Heart Rate: {0} b/60s'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

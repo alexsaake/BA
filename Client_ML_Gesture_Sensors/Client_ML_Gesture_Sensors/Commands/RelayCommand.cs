@@ -6,11 +6,11 @@ namespace Client_ML_Gesture_Sensors.Commands
     public class RelayCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private Action DoWork;
+        private Action Action;
 
-        public RelayCommand(Action work)
+        public RelayCommand(Action action)
         {
-            DoWork = work;
+            Action = action;
         }
 
         public bool CanExecute(object parameter)
@@ -20,7 +20,7 @@ namespace Client_ML_Gesture_Sensors.Commands
 
         public void Execute(object parameter)
         {
-            DoWork();
+            Action();
         }
     }
 }

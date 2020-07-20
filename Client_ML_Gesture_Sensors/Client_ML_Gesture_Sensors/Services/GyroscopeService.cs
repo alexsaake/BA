@@ -4,37 +4,43 @@ using Client_ML_Gesture_Sensors.Models;
 
 namespace Client_ML_Gesture_Sensors.Services
 {
-    class GyroscopeService
+    public class GyroscopeService
     {
-        private Models.Gyroscope Gyroscope;
+        private static Models.Gyroscope gyroscope;
 
-        public void Subscribe(Models.Gyroscope gyroscope)
+        public GyroscopeService()
+        {
+            gyroscope = new Models.Gyroscope();
+        }
+
+        public Models.Gyroscope Get()
+        {
+            return gyroscope;
+        }
+
+        public void Subscribe()
         {
             if (Xamarin.Essentials.Gyroscope.IsMonitoring)
                 return;
 
             Xamarin.Essentials.Gyroscope.ReadingChanged += Gyroscope_DataUpdated;
             Xamarin.Essentials.Gyroscope.Start(SensorSpeed.UI);
-
-            Gyroscope = gyroscope;
         }
 
-        public void Unsubscribe(Models.Gyroscope gyroscope)
+        public void Unsubscribe()
         {
             if (!Xamarin.Essentials.Gyroscope.IsMonitoring)
                 return;
 
             Xamarin.Essentials.Gyroscope.ReadingChanged -= Gyroscope_DataUpdated;
             Xamarin.Essentials.Gyroscope.Stop();
-
-            Gyroscope = null;
         }
 
         private void Gyroscope_DataUpdated(object sender, GyroscopeChangedEventArgs e)
         {
-            Gyroscope.X = e.Reading.AngularVelocity.X;
-            Gyroscope.Y = e.Reading.AngularVelocity.Y;
-            Gyroscope.Z = e.Reading.AngularVelocity.Z;
+            gyroscope.X = e.Reading.AngularVelocity.X;
+            gyroscope.Y = e.Reading.AngularVelocity.Y;
+            gyroscope.Z = e.Reading.AngularVelocity.Z;
         }
     }
 }

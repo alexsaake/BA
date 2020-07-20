@@ -6,33 +6,39 @@ namespace Client_ML_Gesture_Sensors.Services
 {
     public class BarometerService
     {
-        private Models.Barometer Barometer;
+        private static Models.Barometer barometer;
 
-        public void Subscribe(Models.Barometer barometer)
+        public BarometerService()
+        {
+            barometer = new Models.Barometer();
+        }
+
+        public Models.Barometer Get()
+        {
+            return barometer;
+        }
+
+        public void Subscribe()
         {
             if (Xamarin.Essentials.Barometer.IsMonitoring)
                 return;
 
             Xamarin.Essentials.Barometer.ReadingChanged += Barometer_DataUpdated;
             Xamarin.Essentials.Barometer.Start(SensorSpeed.UI);
-
-            Barometer = barometer;
         }
 
-        public void Unsubscribe(Models.Barometer barometer)
+        public void Unsubscribe()
         {
             if (!Xamarin.Essentials.Barometer.IsMonitoring)
                 return;
 
             Xamarin.Essentials.Barometer.ReadingChanged -= Barometer_DataUpdated;
             Xamarin.Essentials.Barometer.Stop();
-
-            Barometer = null;
         }
 
         private void Barometer_DataUpdated(object sender, BarometerChangedEventArgs e)
         {
-            Barometer.Pressure = e.Reading.PressureInHectopascals;
+            barometer.Pressure = e.Reading.PressureInHectopascals;
         }
     }
 }

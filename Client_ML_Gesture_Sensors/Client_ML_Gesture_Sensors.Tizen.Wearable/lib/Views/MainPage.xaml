@@ -1,22 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
              x:Class="Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views.MainPage">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Button Text="Accelerometer"
-                            Clicked="OnAccelerometerClicked"/>
-                <Button Text="Barometer"
-                            Clicked="OnBarometerClicked"/>
-                <Button Text="Geolocation"
-                            Clicked="OnGeolocationClicked"/>
-                <Button Text="Gyroscope"
-                            Clicked="OnGyroscopeClicked"/>
-                <Button Text="Heart Rate Monitor"
-                            Clicked="OnHeartRateMonitorClicked"/>
-                <Button Text="Light Sensor"
-                            Clicked="OnLightSensorClicked"/>
+                <Button Text="Gestures"
+                            Clicked="OnGesturesClicked"/>
+                <Button Text="Device Sensors"
+                            Clicked="OnDeviceSensorsClicked"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

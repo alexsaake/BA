@@ -9,21 +9,27 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
 {
     public class HeartRateMonitorViewModel : BaseViewModel
     {
-        HeartRateMonitorService HeartRateMonitorService;
+        HeartRateMonitorService heartRateMonitorService;
+
+        private HeartRateMonitor heartRateMonitor;
+
+        public HeartRateMonitor HeartRateMonitor
+        {
+            get { return heartRateMonitor; }
+            set { heartRateMonitor = value; OnPropertyChanged(); }
+        }
+
         public HeartRateMonitorViewModel()
         {
-            HeartRateMonitorService = new HeartRateMonitorService();
-            HeartRateMonitorData = new HeartRateMonitor();
+            heartRateMonitorService = new HeartRateMonitorService();
+            LoadData();
             startCommand = new RelayCommand(Start);
             stopCommand = new RelayCommand(Stop);
         }
 
-        private HeartRateMonitor heartRateMonitorData;
-
-        public HeartRateMonitor HeartRateMonitorData
+        private void LoadData()
         {
-            get { return heartRateMonitorData; }
-            set { heartRateMonitorData = value; OnPropertyChanged(); }
+            HeartRateMonitor = heartRateMonitorService.Get();
         }
 
         private RelayCommand startCommand;
@@ -37,7 +43,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
         {
             try
             {
-                HeartRateMonitorService.Subscribe(HeartRateMonitorData);
+                heartRateMonitorService.Subscribe();
             }
             catch (Exception ex)
             {
@@ -56,7 +62,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
         {
             try
             {
-                HeartRateMonitorService.Unsubscribe(HeartRateMonitorData);
+                heartRateMonitorService.Unsubscribe();
             }
             catch (Exception ex)
             {

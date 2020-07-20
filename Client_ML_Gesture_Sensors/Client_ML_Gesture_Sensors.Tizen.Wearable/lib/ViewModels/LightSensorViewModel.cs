@@ -9,21 +9,27 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
 {
     public class LightSensorViewModel : BaseViewModel
     {
-        LightSensorService LightSensorService;
+        LightSensorService lightSensorService;
+
+        private LightSensor lightSensor;
+
+        public LightSensor LightSensor
+        {
+            get { return lightSensor; }
+            set { lightSensor = value; OnPropertyChanged(); }
+        }
+
         public LightSensorViewModel()
         {
-            LightSensorService = new LightSensorService();
-            LightSensorData = new LightSensor();
+            lightSensorService = new LightSensorService();
+            LoadData();
             startCommand = new RelayCommand(Start);
             stopCommand = new RelayCommand(Stop);
         }
 
-        private LightSensor lightSensorData;
-
-        public LightSensor LightSensorData
+        private void LoadData()
         {
-            get { return lightSensorData; }
-            set { lightSensorData = value; OnPropertyChanged(); }
+            lightSensor = lightSensorService.Get();
         }
 
         private RelayCommand startCommand;
@@ -37,7 +43,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
         {
             try
             {
-                LightSensorService.Subscribe(LightSensorData);
+                lightSensorService.Subscribe();
             }
             catch (Exception ex)
             {
@@ -56,7 +62,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
         {
             try
             {
-                LightSensorService.Unsubscribe(LightSensorData);
+                lightSensorService.Unsubscribe();
             }
             catch (Exception ex)
             {

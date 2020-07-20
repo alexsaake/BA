@@ -7,10 +7,21 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 {
     class HeartRateMonitorService
     {
-        private Models.HeartRateMonitor HeartRateMonitor;
+        private static Models.HeartRateMonitor heartRateMonitor;
+
+        public HeartRateMonitorService()
+        {
+            heartRateMonitor = new Models.HeartRateMonitor();
+        }
+
+        public Models.HeartRateMonitor Get()
+        {
+            return heartRateMonitor;
+        }
+
         private Sensor.HeartRateMonitor _monitor;
 
-        public void Subscribe(Models.HeartRateMonitor heartRateMonitor)
+        public void Subscribe()
         {
             if (!Sensor.HeartRateMonitor.IsSupported || !CheckPrivileges())
                 return;
@@ -19,11 +30,9 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
             _monitor.Interval = 1000;
             _monitor.DataUpdated += Pulsometer_DataUpdated;
             _monitor.Start();
-
-            HeartRateMonitor = heartRateMonitor;
         }
 
-        public void Unsubscribe(Models.HeartRateMonitor heartRateMonitor)
+        public void Unsubscribe()
         {
             if (!CheckPrivileges() || (!Sensor.HeartRateMonitor.IsSupported && !_monitor.IsSensing))
                 return;
@@ -31,8 +40,6 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
             _monitor.DataUpdated -= Pulsometer_DataUpdated;
             _monitor.Stop();
             _monitor.Dispose();
-
-            HeartRateMonitor = null;
         }
         private bool CheckPrivileges()
         {
@@ -63,7 +70,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 
         private void Pulsometer_DataUpdated(object sender, Sensor.HeartRateMonitorDataUpdatedEventArgs e)
         {
-            HeartRateMonitor.HeartRate = e.HeartRate;
+            heartRateMonitor.HeartRate = e.HeartRate;
         }
     }
 }

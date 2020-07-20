@@ -6,35 +6,41 @@ namespace Client_ML_Gesture_Sensors.Services
 {
     public class AccelerometerService
     {
-        private Models.Accelerometer Accelerometer;
+        private static Models.Accelerometer accelerometer;
 
-        public void Subscribe(Models.Accelerometer accelerometer)
+        public AccelerometerService()
+        {
+            accelerometer = new Models.Accelerometer();
+        }
+
+        public Models.Accelerometer Get()
+        {
+            return accelerometer;
+        }
+
+        public void Subscribe()
         {
             if (Xamarin.Essentials.Accelerometer.IsMonitoring)
                 return;
 
             Xamarin.Essentials.Accelerometer.ReadingChanged += Accelerometer_DataUpdated;
             Xamarin.Essentials.Accelerometer.Start(SensorSpeed.UI);
-
-            Accelerometer = accelerometer;
         }
 
-        public void Unsubscribe(Models.Accelerometer accelerometer)
+        public void Unsubscribe()
         {
             if (!Xamarin.Essentials.Accelerometer.IsMonitoring)
                 return;
 
             Xamarin.Essentials.Accelerometer.ReadingChanged -= Accelerometer_DataUpdated;
             Xamarin.Essentials.Accelerometer.Stop();
-
-            Accelerometer = null;
         }
 
         private void Accelerometer_DataUpdated(object sender, AccelerometerChangedEventArgs e)
         {
-            Accelerometer.X = e.Reading.Acceleration.X;
-            Accelerometer.Y = e.Reading.Acceleration.Y;
-            Accelerometer.Z = e.Reading.Acceleration.Z;
+            accelerometer.X = e.Reading.Acceleration.X;
+            accelerometer.Y = e.Reading.Acceleration.Y;
+            accelerometer.Z = e.Reading.Acceleration.Z;
         }
     }
 }
