@@ -10,6 +10,8 @@
             <StackLayout>
                 <Button Text="Gestures"
                             Clicked="OnGesturesClicked"/>
+                <Button Text="Record"
+                            Clicked="OnRecordClicked"/>
                 <Button Text="Device Sensors"
                             Clicked="OnDeviceSensorsClicked"/>
             </StackLayout>

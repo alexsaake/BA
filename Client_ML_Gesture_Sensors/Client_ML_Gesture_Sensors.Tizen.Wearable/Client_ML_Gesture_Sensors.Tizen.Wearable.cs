@@ -1,6 +1,6 @@
 using Xamarin.Forms;
 
-namespace Client_ML_Gesture_Sensors
+namespace Client_ML_Gesture_Sensors.Tizen.Wearable
 {
     class Program : global::Xamarin.Forms.Platform.Tizen.FormsApplication
     {

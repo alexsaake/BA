@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:Client_ML_Gesture_Sensors.ViewModels"
+             xmlns:ctrl="clr-namespace:Client_ML_Gesture_Sensors.Controls"
              x:Class="Client_ML_Gesture_Sensors.Views.GesturePage">
     <ContentPage.BindingContext>
         <model:GestureViewModel/>
@@ -9,15 +10,23 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout HorizontalOptions="Center">
-                <Label Text="{Binding Message}"/>
-                <Button Text="Record" Command="{Binding RecordCommand}"
-                        IsEnabled="{Binding Gesture.CanRecord}"/>
-                <Button Text="Predict" Command="{Binding GetClusteringCommand}"
-                        IsEnabled="{Binding Gesture.IsAvailable}"/>
-                <Entry Placeholder="Label" Text="{Binding Label}"
-                        IsEnabled="{Binding Gesture.IsNotSaved}"/>
-                <Button Text="Save" Command="{Binding SaveCommand}"
-                        IsEnabled="{Binding Gesture.IsNotSaved}"/>
+                <ctrl:SKRenderView HeightRequest="200"
+                                   WidthRequest="400"
+                                   x:Name="Canvas"
+                                   Renderer="{Binding Renderer}"/>
+                <Label Text="{Binding QueryResult}"/>
+
+                <Label Text="Query Time (s)"/>
+                <Entry Text="{Binding QueryEachSeconds}"
+                       Keyboard="Numeric"/>
+
+                <Label Text="Collect Time (s)"/>
+                <Entry Text="{Binding CollectForSeconds}"
+                       Keyboard="Numeric"/>
+                
+                <Label Text="Values / s"/>
+                <Entry Text="{Binding ValuesPerSecond}"
+                       Keyboard="Numeric"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

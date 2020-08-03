@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-using Client_ML_Gesture_Sensors.Models;
-
 namespace Client_ML_Gesture_Sensors.Services
 {
     public class GeolocationService
@@ -31,7 +29,7 @@ namespace Client_ML_Gesture_Sensors.Services
                 {
                     DesiredAccuracy = GeolocationAccuracy.Best,
                     Timeout = TimeSpan.FromSeconds(30),
-                    
+
                 });
 
                 if (location != null)
@@ -43,7 +41,7 @@ namespace Client_ML_Gesture_Sensors.Services
             }
             catch (Exception ex)
             {
-                
+
             }
         }
 

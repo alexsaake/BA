@@ -1,7 +1,5 @@
 ﻿using Sensor = Tizen.Sensor;
 
-using Client_ML_Gesture_Sensors.Models;
-
 namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 {
     class LightSensorService

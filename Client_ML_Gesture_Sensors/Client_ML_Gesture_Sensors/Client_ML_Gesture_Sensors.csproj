@@ -6,8 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2-preview.18" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1080" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1238-pre3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +17,9 @@
     </Compile>
     <Compile Update="Views\GeolocationPage.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\RecordPage.xaml.cs">
+      <DependentUpon>RecordPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\GesturePage.xaml.cs">
       <DependentUpon>GesturePage.xaml</DependentUpon>

@@ -1,8 +1,7 @@
-﻿using System;
-
+﻿using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Models;
 using Client_ML_Gesture_Sensors.Services;
-using Client_ML_Gesture_Sensors.Commands;
+using System;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {

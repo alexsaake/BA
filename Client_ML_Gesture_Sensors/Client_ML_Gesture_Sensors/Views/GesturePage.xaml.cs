@@ -1,6 +1,5 @@
-﻿using Xamarin.Forms;
-
-using Client_ML_Gesture_Sensors.ViewModels;
+﻿using Client_ML_Gesture_Sensors.ViewModels;
+using Xamarin.Forms;
 
 namespace Client_ML_Gesture_Sensors.Views
 {

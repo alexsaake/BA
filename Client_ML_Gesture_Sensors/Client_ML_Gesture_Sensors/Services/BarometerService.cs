@@ -1,7 +1,5 @@
 ﻿using Xamarin.Essentials;
 
-using Client_ML_Gesture_Sensors.Models;
-
 namespace Client_ML_Gesture_Sensors.Services
 {
     public class BarometerService

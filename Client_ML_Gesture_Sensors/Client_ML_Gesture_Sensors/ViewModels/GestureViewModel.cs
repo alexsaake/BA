@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-
+﻿using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Models;
+using Client_ML_Gesture_Sensors.Renderers;
 using Client_ML_Gesture_Sensors.Services;
-using Client_ML_Gesture_Sensors.Commands;
+using System;
+using Xamarin.Forms;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
@@ -11,27 +11,68 @@ namespace Client_ML_Gesture_Sensors.ViewModels
     {
         GestureService gestureService;
 
-        private Gesture gesture;
+        Gesture gesture;
 
-        public Gesture Gesture
+        APIConnectorService APIConnection;
+
+        public GraphRenderer Renderer { get; set; }
+
+        private bool isRecording;
+
+        private int valuesPerSecond;
+
+        public int ValuesPerSecond
         {
-            get { return gesture; }
-            set { gesture = value; OnPropertyChanged(); }
+            get { return valuesPerSecond; }
+            set { valuesPerSecond = value; OnPropertyChanged(); }
+        }
+
+        private int queryEachSeconds;
+
+        public int QueryEachSeconds
+        {
+            get { return  queryEachSeconds; }
+            set {  queryEachSeconds = value; OnPropertyChanged(); }
+        }
+
+
+        private int collectForSeconds;
+
+        public int CollectForSeconds
+        {
+            get { return collectForSeconds; }
+            set
+            {
+                if (value > 0)
+                {
+                    collectForSeconds = value;
+                    OnPropertyChanged();
+                }
+                else
+                {
+                    CollectForSeconds = 12;
+                }
+            }
         }
 
         public GestureViewModel()
         {
             gestureService = new GestureService();
-            LoadData();
+            gesture = gestureService.Get();
+
             startCommand = new RelayCommand(Start);
             stopCommand = new RelayCommand(Stop);
-            recordCommand = new RelayCommand(async () => await RecordAsync());
-            saveCommand = new RelayCommand(async () => await SaveAsync());
-        }
 
-        private void LoadData()
-        {
-            Gesture = gestureService.Get();
+            Renderer = new Renderers.GraphRenderer();
+
+            ValuesPerSecond = 5;
+            CollectForSeconds = 12;
+
+            isRecording = false;
+
+            APIConnection = new APIConnectorService();
+
+            QueryEachSeconds = 5;
         }
 
         private RelayCommand startCommand;
@@ -46,11 +87,24 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             try
             {
                 gestureService.SubscribeAll();
+
+                isRecording = true;
+                Device.StartTimer(TimeSpan.FromMilliseconds(1000 / ValuesPerSecond), OnTimerTick);
+                Device.StartTimer(TimeSpan.FromSeconds(1), OnTimerTickCollect);
             }
             catch (Exception ex)
             {
 
             }
+        }
+
+        private bool OnTimerTick()
+        {
+            gestureService.AddPoint(ValuesPerSecond * CollectForSeconds);
+
+            Renderer.DrawGraph(gesture, ValuesPerSecond * CollectForSeconds);
+
+            return isRecording;
         }
 
         private RelayCommand stopCommand;
@@ -65,6 +119,8 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             try
             {
                 gestureService.UnsubscribeAll();
+
+                isRecording = false;
             }
             catch (Exception ex)
             {
@@ -72,87 +128,20 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
         }
 
-        private string message;
+        private string queryResult;
 
-        public string Message
+        public string QueryResult
         {
-            get { return message; }
-            set { message = value; OnPropertyChanged(); }
+            get { return queryResult; }
+            set { queryResult = value; OnPropertyChanged(); }
         }
 
-        private RelayCommand recordCommand;
 
-        public RelayCommand RecordCommand
+        private bool OnTimerTickCollect()
         {
-            get { return recordCommand; }
-        }
+            QueryResult = APIConnection.GetClusteringResult(gesture).ToString();
 
-        private async Task RecordAsync()
-        {
-            try
-            {
-                await gestureService.Record();
-                LoadData();
-            }
-            catch (Exception ex)
-            {
-                Message = ex.Message;
-            }
-        }
-
-        private RelayCommand getClusteringCommand;
-
-        public RelayCommand GetClusteringCommand
-        {
-            get { return getClusteringCommand; }
-        }
-
-        private async Task ClusteringCommandAsync()
-        {
-            try
-            {
-                Message = await gestureService.GetClusteringResult();
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        private string label;
-
-        public string Label
-        {
-            get { return label; }
-            set { label = value; OnPropertyChanged(); }
-        }
-
-        private RelayCommand saveCommand;
-
-        public RelayCommand SaveCommand
-        {
-            get { return saveCommand; }
-        }
-
-        private async Task SaveAsync()
-        {
-            try
-            {
-                if(Label != "")
-                {
-                    Gesture.Label = Label;
-                    await gestureService.SaveToBackend();
-                    LoadData();
-                }
-                else
-                {
-                    Message = "Please enter a label";
-                }
-            }
-            catch (Exception ex)
-            {
-                Message = ex.Message;
-            }
+            return isRecording;
         }
     }
 }

@@ -4,6 +4,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>tizen40</TargetFramework>
+    <AssemblyName>Client_ML_Gesture_Sensors.Tizen.Wearable</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -20,7 +21,8 @@
 
   
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1143-pre1" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2-preview.18" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1238-pre3" />
   </ItemGroup>
 
   

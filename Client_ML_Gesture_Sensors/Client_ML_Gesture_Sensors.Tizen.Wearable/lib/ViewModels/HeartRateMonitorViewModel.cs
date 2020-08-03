@@ -1,9 +1,8 @@
-﻿using System;
-
+﻿using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Models;
-using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services;
 using Client_ML_Gesture_Sensors.ViewModels;
+using System;
 
 namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
 {

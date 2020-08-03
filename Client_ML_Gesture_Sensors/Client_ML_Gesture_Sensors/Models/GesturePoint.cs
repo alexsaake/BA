@@ -44,8 +44,16 @@ namespace Client_ML_Gesture_Sensors.Models
             Gyroscope gyroscope)
         {
             TimeStamp = DateTime.Now;
-            Accelerometer = accelerometer;
-            Gyroscope = gyroscope;
+
+            Accelerometer = new Accelerometer();
+            Gyroscope = new Gyroscope();
+
+            Accelerometer.X = accelerometer.X;
+            Accelerometer.Y = accelerometer.Y;
+            Accelerometer.Z = accelerometer.Z;
+            Gyroscope.X = gyroscope.X;
+            Gyroscope.Y = gyroscope.Y;
+            Gyroscope.Z = gyroscope.Z;
         }
     }
 }

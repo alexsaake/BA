@@ -1,6 +1,5 @@
-﻿using Xamarin.Forms;
-
-using Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels;
+﻿using Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels;
+using Xamarin.Forms;
 
 namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views
 {

@@ -1,7 +1,7 @@
 ﻿using Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views;
 using Xamarin.Forms;
 
-namespace Client_ML_Gesture_Sensors
+namespace Client_ML_Gesture_Sensors.Tizen.Wearable
 {
     public class App : Application
     {

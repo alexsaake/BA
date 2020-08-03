@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:Client_ML_Gesture_Sensors.ViewModels"
+             xmlns:ctrl="clr-namespace:Client_ML_Gesture_Sensors.Controls"
+             x:Class="Client_ML_Gesture_Sensors.Views.RecordPage">
+    <ContentPage.BindingContext>
+        <model:RecordViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout HorizontalOptions="Center">
+                <ctrl:SKRenderView HeightRequest="200"
+                                   WidthRequest="400"
+                                   x:Name="Canvas"
+                                   Renderer="{Binding Renderer}"/>
+                <Button Text="{Binding StartStopText}"
+                        BackgroundColor="{Binding StartStopBackgroundColor}"
+                        IsEnabled="{Binding StartStopIsEnabled}"
+                        Command="{Binding StartCollectCommand}"/>
+                
+                <Label Text="Start Time (s)"/>
+                <Entry Text="{Binding StartAfterSeconds}"
+                       Keyboard="Numeric"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+                
+                <Label Text="Collect Time (s)"/>
+                <Entry Text="{Binding CollectForSeconds}"
+                       Keyboard="Numeric"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+                
+                <Label Text="Values / s"/>
+                <Entry Text="{Binding ValuesPerSecond}"
+                       Keyboard="Numeric"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,7 +1,5 @@
-﻿using Sensor = Tizen.Sensor;
-using Tizen.Security;
-
-using Client_ML_Gesture_Sensors.Models;
+﻿using Tizen.Security;
+using Sensor = Tizen.Sensor;
 
 namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 {

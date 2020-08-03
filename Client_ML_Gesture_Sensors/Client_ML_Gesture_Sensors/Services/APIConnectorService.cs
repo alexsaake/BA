@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Client_ML_Gesture_Sensors.Models;
+using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-
-using Client_ML_Gesture_Sensors.Models;
-using System.Net;
 
 namespace Client_ML_Gesture_Sensors.Services
 {
@@ -41,7 +40,7 @@ namespace Client_ML_Gesture_Sensors.Services
 
         public async Task<bool> Save(Gesture _gesture)
         {
-            if (_gesture.GesturePointList.Count == 20 && _gesture.Label != "")
+            if (_gesture.GesturePointList.Count == 20)
             {
                 string jsonString = JsonConvert.SerializeObject(_gesture, Formatting.Indented);
 
