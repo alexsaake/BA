@@ -10,14 +10,15 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout HorizontalOptions="Center">
-                <ctrl:SKRenderView HeightRequest="200"
-                                   WidthRequest="400"
-                                   x:Name="Canvas"
-                                   Renderer="{Binding Renderer}"/>
                 <Button Text="{Binding StartStopText}"
                         BackgroundColor="{Binding StartStopBackgroundColor}"
                         IsEnabled="{Binding StartStopIsEnabled}"
                         Command="{Binding StartCollectCommand}"/>
+                
+                <ctrl:SKRenderView HeightRequest="200"
+                                   WidthRequest="400"
+                                   x:Name="Canvas"
+                                   Renderer="{Binding Renderer}"/>
                 
                 <Label Text="Start Time (s)"/>
                 <Entry Text="{Binding StartAfterSeconds}"

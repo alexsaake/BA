@@ -1,4 +1,5 @@
-﻿using SkiaSharp.Views.Forms;
+﻿using Client_ML_Gesture_Sensors.Renderers;
+using SkiaSharp.Views.Forms;
 using System;
 using Xamarin.Forms;
 
@@ -39,11 +40,15 @@ namespace Client_ML_Gesture_Sensors.Controls
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
         {
             Renderer.PaintSurface(e.Surface, e.Info);
+            Renderer.PaintAccelerometer(e.Surface, e.Info);
+            Renderer.PaintGyroscope(e.Surface, e.Info);
+            Renderer.PaintGyroscope(e.Surface, e.Info);
+            Renderer.PaintTimestamp(e.Surface, e.Info);
         }
 
-        public Renderers.IRenderer Renderer
+        public GraphRenderer Renderer
         {
-            get { return (Renderers.IRenderer)GetValue(RendererProperty); }
+            get { return (GraphRenderer)GetValue(RendererProperty); }
             set { SetValue(RendererProperty, value); }
         }
     }

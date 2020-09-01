@@ -1,8 +1,11 @@
-﻿using Client_ML_Gesture_Sensors.Commands;
+﻿using System;
+using System.Windows.Input;
+
+using Xamarin.Forms;
+
 using Client_ML_Gesture_Sensors.Models;
 using Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services;
 using Client_ML_Gesture_Sensors.ViewModels;
-using System;
 
 namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
 {
@@ -22,8 +25,8 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
         {
             heartRateMonitorService = new HeartRateMonitorService();
             LoadData();
-            startCommand = new RelayCommand(Start);
-            stopCommand = new RelayCommand(Stop);
+            StartCommand = new Command(Start);
+            StopCommand = new Command(Stop);
         }
 
         private void LoadData()
@@ -31,12 +34,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
             HeartRateMonitor = heartRateMonitorService.Get();
         }
 
-        private RelayCommand startCommand;
-
-        public RelayCommand StartCommand
-        {
-            get { return startCommand; }
-        }
+        public ICommand StartCommand { get; }
 
         public void Start()
         {
@@ -50,12 +48,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels
             }
         }
 
-        private RelayCommand stopCommand;
-
-        public RelayCommand StopCommand
-        {
-            get { return stopCommand; }
-        }
+        public ICommand StopCommand { get; }
 
         void Stop()
         {

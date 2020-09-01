@@ -1,5 +1,7 @@
-﻿using Client_ML_Gesture_Sensors.ViewModels;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+
+using Client_ML_Gesture_Sensors.Models;
+using Client_ML_Gesture_Sensors.ViewModels;
 
 namespace Client_ML_Gesture_Sensors.Views
 {
@@ -7,6 +9,7 @@ namespace Client_ML_Gesture_Sensors.Views
     {
         public GesturePage()
         {
+            AppConfig.AppConfiguration.LoadFromSystemFile();
             InitializeComponent();
         }
 

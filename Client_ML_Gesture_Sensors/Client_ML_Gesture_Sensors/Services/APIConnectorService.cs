@@ -1,40 +1,64 @@
-﻿using Client_ML_Gesture_Sensors.Models;
-using Newtonsoft.Json;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
+using Xamarin.Forms;
+using Newtonsoft.Json;
+
+using Client_ML_Gesture_Sensors.Models;
+
 namespace Client_ML_Gesture_Sensors.Services
 {
     class APIConnectorService
     {
-        private HttpClient _client;
+        private HttpClient Client;
+
+        private bool IsQuerying;
+
+        public Gesture Gesture { get; set; }
+
+        private int queryEachSeconds;
+
+        public int QueryEachSeconds
+        {
+            set { queryEachSeconds = value; }
+        }
 
         public APIConnectorService()
         {
-            _client = new HttpClient();
+            Client = new HttpClient();
 
-            _client.BaseAddress = new System.Uri("http://localhost");
+            IsQuerying = false;
         }
 
-        public async Task<string> GetClusteringResult(Gesture _gesture)
+        public void StartQueryResult()
         {
-            string jsonString = JsonConvert.SerializeObject(_gesture, Formatting.Indented);
+            IsQuerying = true;
+            Device.StartTimer(TimeSpan.FromSeconds(queryEachSeconds), OnTimerTick);
+        }
+        private bool OnTimerTick()
+        {
+            _ = GetPredictionResult();
+            return IsQuerying;
+        }
 
-            StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        public void StopQueryResult()
+        {
+            IsQuerying = false;
+        }
 
-            HttpResponseMessage response = await _client.PostAsync("clustering", content);
+        private async Task GetPredictionResult()
+        {
+            string requestStr = "http://192.168.178.30:5000/api/";
+            var requestURI = new Uri(string.Format(requestStr, string.Empty));
 
-            if (response.StatusCode == HttpStatusCode.OK)
+            HttpResponseMessage response = await Client.GetAsync(requestURI);
+
+            if (response.IsSuccessStatusCode)
             {
-                string clustering = await response.Content.ReadAsStringAsync();
-
-                return clustering;
-            }
-            else
-            {
-                return response.StatusCode.ToString();
+                Gesture.Prediction = await response.Content.ReadAsStringAsync();
             }
         }
 
@@ -46,7 +70,7 @@ namespace Client_ML_Gesture_Sensors.Services
 
                 StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await _client.PostAsync("save", content);
+                HttpResponseMessage response = await Client.PostAsync("save", content);
 
                 return response.IsSuccessStatusCode;
             }

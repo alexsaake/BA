@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Windows.Input;
 
 using Xamarin.Forms;
 
-using Client_ML_Gesture_Sensors.Commands;
 using Client_ML_Gesture_Sensors.Models;
 using Client_ML_Gesture_Sensors.Renderers;
 using Client_ML_Gesture_Sensors.Services;
@@ -11,22 +11,34 @@ namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class RecordViewModel : BaseViewModel
     {
-        private GestureService gestureService;
+        private GestureService GestureService;
 
-        private Gesture gesture;
+        private Gesture Gesture;
 
         public GraphRenderer Renderer { get; set; }
 
-        private VibrationService vibrationService;
-
-        private bool isRecording;
+        private VibrationService VibrationService;
 
         private int valuesPerSecond;
 
         public int ValuesPerSecond
         {
             get { return valuesPerSecond; }
-            set { valuesPerSecond = value; OnPropertyChanged(); }
+            set
+            {
+                if (value > 0)
+                {
+                    valuesPerSecond = value;
+                    OnPropertyChanged();
+                    GestureService.ValuesPerSecond = ValuesPerSecond;
+                    GestureService.ValuesMax = ValuesPerSecond * CollectForSeconds;
+                    Renderer.ValuesMax = ValuesPerSecond * CollectForSeconds;
+                }
+                else
+                {
+                    ValuesPerSecond = 5;
+                }
+            }
         }
 
         private int collectForSeconds;
@@ -40,6 +52,8 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                 {
                     collectForSeconds = value;
                     OnPropertyChanged();
+                    GestureService.ValuesMax = ValuesPerSecond * CollectForSeconds;
+                    Renderer.ValuesMax = ValuesPerSecond * CollectForSeconds;
                 }
                 else
                 {
@@ -50,41 +64,35 @@ namespace Client_ML_Gesture_Sensors.ViewModels
 
         public RecordViewModel()
         {
-            gestureService = new GestureService();
-            gesture = gestureService.Get();
+            GestureService = new GestureService();
+            Gesture = GestureService.Gesture;
 
-            startCommand = new RelayCommand(Start);
-            stopCommand = new RelayCommand(Stop);
+            Renderer = new GraphRenderer();
+            Renderer.Gesture = Gesture;
 
-            Renderer = new Renderers.GraphRenderer();
-
+            valuesPerSecond = 5;
             ValuesPerSecond = 5;
             CollectForSeconds = 12;
             StartAfterSeconds = 3;
 
-            isRecording = false;
+            VibrationService = new VibrationService();
+
+            StartCommand = new Command(Start);
+            StopCommand = new Command(Stop);
+            StartCollectCommand = new Command(StartCollect);
 
             StartStopText = "Start Collecting";
             StartStopBackgroundColor = Color.Default;
-            startCollectCommand = new RelayCommand(StartCollect);
-
             StartStopIsEnabled = true;
-
-            vibrationService = new VibrationService();
         }
 
-        private RelayCommand startCommand;
-
-        public RelayCommand StartCommand
-        {
-            get { return startCommand; }
-        }
+        public ICommand StartCommand { get; }
 
         public void Start()
         {
             try
             {
-                gestureService.SubscribeAll();
+                GestureService.SubscribeSensors();
             }
             catch (Exception ex)
             {
@@ -92,20 +100,13 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
         }
 
-        private RelayCommand stopCommand;
-
-        public RelayCommand StopCommand
-        {
-            get { return stopCommand; }
-        }
+        public ICommand StopCommand { get; }
 
         void Stop()
         {
             try
             {
-                gestureService.UnsubscribeAll();
-
-                isRecording = false;
+                GestureService.UnsubscribeSensors();
             }
             catch (Exception ex)
             {
@@ -120,7 +121,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             get { return startAfterSeconds; }
             set
             {
-                if (value > 0)
+                if (value >= 0)
                 {
                     startAfterSeconds = value;
                     OnPropertyChanged();
@@ -156,16 +157,10 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             set { startStopIsEnabled = value; OnPropertyChanged(); }
         }
 
-
         private int startSecondsRemaining;
         private int collectSecondsRemaining;
 
-        private RelayCommand startCollectCommand;
-
-        public RelayCommand StartCollectCommand
-        {
-            get { return startCollectCommand; }
-        }
+        public ICommand StartCollectCommand { get; }
 
         void StartCollect()
         {
@@ -185,15 +180,6 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
         }
 
-        private bool OnTimerTick()
-        {
-            gestureService.AddPoint(ValuesPerSecond * CollectForSeconds);
-
-            Renderer.DrawGraph(gesture, ValuesPerSecond * CollectForSeconds);
-
-            return isRecording;
-        }
-
         private bool OnTimerTickCollect()
         {
             if (startSecondsRemaining > 0)
@@ -204,12 +190,10 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             else if (collectSecondsRemaining > 0)
             {
-                if(!isRecording)
+                if(!GestureService.IsRecording)
                 {
-                    isRecording = true;
-                    Device.StartTimer(TimeSpan.FromMilliseconds(1000 / ValuesPerSecond), OnTimerTick);
-
-                    vibrationService.Vibrate(500);
+                    GestureService.StartRecordingValuesMax();
+                    VibrationService.Vibrate(500);
                 }
                 StartStopText = collectSecondsRemaining.ToString();
                 StartStopBackgroundColor = Color.Green;
@@ -220,12 +204,9 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                 StartStopText = "Start Collecting";
                 StartStopBackgroundColor = Color.Default;
                 StartStopIsEnabled = true;
-                isRecording = false;
 
-                gestureService.ToString();
-
-                vibrationService.Vibrate(500);
-                vibrationService.Vibrate(500);
+                VibrationService.Vibrate(300);
+                VibrationService.Vibrate(300);
             }
 
             return !StartStopIsEnabled;

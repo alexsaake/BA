@@ -1,96 +1,106 @@
-﻿using Client_ML_Gesture_Sensors.Commands;
+﻿using System;
+using System.Windows.Input;
+
+using Xamarin.Forms;
+
 using Client_ML_Gesture_Sensors.Models;
 using Client_ML_Gesture_Sensors.Renderers;
 using Client_ML_Gesture_Sensors.Services;
-using System;
-using Xamarin.Forms;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class GestureViewModel : BaseViewModel
     {
-        GestureService gestureService;
+        private GestureService GestureService;
 
-        Gesture gesture;
+        private Gesture gesture;
 
-        APIConnectorService APIConnection;
+        public Gesture Gesture
+        {
+            get { return gesture; }
+            set { gesture = value; OnPropertyChanged(); }
+        }
+
+        private APIConnectorService APIConnectorService;
 
         public GraphRenderer Renderer { get; set; }
-
-        private bool isRecording;
 
         private int valuesPerSecond;
 
         public int ValuesPerSecond
         {
             get { return valuesPerSecond; }
-            set { valuesPerSecond = value; OnPropertyChanged(); }
-        }
-
-        private int queryEachSeconds;
-
-        public int QueryEachSeconds
-        {
-            get { return  queryEachSeconds; }
-            set {  queryEachSeconds = value; OnPropertyChanged(); }
-        }
-
-
-        private int collectForSeconds;
-
-        public int CollectForSeconds
-        {
-            get { return collectForSeconds; }
             set
             {
                 if (value > 0)
                 {
-                    collectForSeconds = value;
+                    valuesPerSecond = value;
                     OnPropertyChanged();
+                    GestureService.ValuesPerSecond = ValuesPerSecond;
+                    GestureService.ValuesMax = ValuesPerSecond * BufferForSeconds;
+                    Renderer.ValuesMax = ValuesPerSecond * BufferForSeconds;
                 }
                 else
                 {
-                    CollectForSeconds = 12;
+                    ValuesPerSecond = 5;
+                }
+            }
+        }
+
+        private int bufferForSeconds;
+
+        public int BufferForSeconds
+        {
+            get { return bufferForSeconds; }
+            set
+            {
+                if (value > 0)
+                {
+                    bufferForSeconds = value;
+                    OnPropertyChanged();
+                    GestureService.ValuesMax = ValuesPerSecond * BufferForSeconds;
+                    Renderer.ValuesMax = ValuesPerSecond * BufferForSeconds;
+                }
+                else
+                {
+                    BufferForSeconds = 12;
                 }
             }
         }
 
         public GestureViewModel()
         {
-            gestureService = new GestureService();
-            gesture = gestureService.Get();
+            GestureService = new GestureService();
+            Gesture = GestureService.Gesture;
 
-            startCommand = new RelayCommand(Start);
-            stopCommand = new RelayCommand(Stop);
-
-            Renderer = new Renderers.GraphRenderer();
+            Renderer = new GraphRenderer();
+            Renderer.Gesture = Gesture;
 
             ValuesPerSecond = 5;
-            CollectForSeconds = 12;
+            BufferForSeconds = 12;
 
-            isRecording = false;
-
-            APIConnection = new APIConnectorService();
+            APIConnectorService = new APIConnectorService();
+            APIConnectorService.Gesture = Gesture;
 
             QueryEachSeconds = 5;
+
+            StartCommand = new Command(Start);
+            StopCommand = new Command(Stop);
+            ChangeConfigurationCommand = new Command(ChangeConfiguration);
+
+            ChangeConfigurationText = "Change Configuration";
+            ChangeConfigurationIsEnabled = false;
         }
 
-        private RelayCommand startCommand;
-
-        public RelayCommand StartCommand
-        {
-            get { return startCommand; }
-        }
+        public ICommand StartCommand { get; }
 
         public void Start()
         {
             try
             {
-                gestureService.SubscribeAll();
-
-                isRecording = true;
-                Device.StartTimer(TimeSpan.FromMilliseconds(1000 / ValuesPerSecond), OnTimerTick);
-                Device.StartTimer(TimeSpan.FromSeconds(1), OnTimerTickCollect);
+                GestureService.SubscribeSensors();
+                GestureService.StartRecordingContinuously();
+                APIConnectorService.StartQueryResult();
             }
             catch (Exception ex)
             {
@@ -98,29 +108,15 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
         }
 
-        private bool OnTimerTick()
-        {
-            gestureService.AddPoint(ValuesPerSecond * CollectForSeconds);
-
-            Renderer.DrawGraph(gesture, ValuesPerSecond * CollectForSeconds);
-
-            return isRecording;
-        }
-
-        private RelayCommand stopCommand;
-
-        public RelayCommand StopCommand
-        {
-            get { return stopCommand; }
-        }
+        public ICommand StopCommand { get; }
 
         void Stop()
         {
             try
             {
-                gestureService.UnsubscribeAll();
-
-                isRecording = false;
+                APIConnectorService.StopQueryResult();
+                GestureService.StopRecording();
+                GestureService.UnsubscribeSensors();
             }
             catch (Exception ex)
             {
@@ -128,20 +124,55 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
         }
 
-        private string queryResult;
+        private int queryEachSeconds;
 
-        public string QueryResult
+        public int QueryEachSeconds
         {
-            get { return queryResult; }
-            set { queryResult = value; OnPropertyChanged(); }
+            get { return queryEachSeconds; }
+            set
+            {
+                queryEachSeconds = value;
+                OnPropertyChanged();
+                APIConnectorService.QueryEachSeconds = QueryEachSeconds;
+            }
         }
 
+        private string changeConfigurationText;
 
-        private bool OnTimerTickCollect()
+        public string ChangeConfigurationText
         {
-            QueryResult = APIConnection.GetClusteringResult(gesture).ToString();
+            get { return changeConfigurationText; }
+            set { changeConfigurationText = value; OnPropertyChanged(); }
+        }
 
-            return isRecording;
+        private bool changeConfigurationIsEnabled;
+
+        public bool ChangeConfigurationIsEnabled
+        {
+            get { return changeConfigurationIsEnabled; }
+            set { changeConfigurationIsEnabled = value; OnPropertyChanged(); }
+        }
+
+        public ICommand ChangeConfigurationCommand { get; }
+
+        void ChangeConfiguration()
+        {
+            if(!ChangeConfigurationIsEnabled)
+            {
+                ChangeConfigurationText = "Resume Tracking";
+                ChangeConfigurationIsEnabled = true;
+
+                GestureService.StopRecording();
+                APIConnectorService.StopQueryResult();
+            }
+            else
+            {
+                ChangeConfigurationText = "Change Configuration";
+                ChangeConfigurationIsEnabled = false;
+
+                GestureService.StartRecordingContinuously();
+                APIConnectorService.StartQueryResult();
+            }
         }
     }
 }

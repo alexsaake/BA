@@ -14,6 +14,8 @@
                             Clicked="OnRecordClicked"/>
                 <Button Text="Device Sensors"
                             Clicked="OnDeviceSensorsClicked"/>
+                <Button Text="Configuration"
+                            Clicked="OnConfigurationClicked"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

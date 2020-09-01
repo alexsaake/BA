@@ -27,5 +27,10 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views
         {
             await Navigation.PushAsync(new DeviceSensorsPage());
         }
+
+        async void OnConfigurationClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new ConfigurationPage());
+        }
     }
 }

@@ -10,23 +10,30 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout HorizontalOptions="Center">
+                <Label Text="{Binding Gesture.Prediction}"/>
+                
                 <ctrl:SKRenderView HeightRequest="200"
                                    WidthRequest="400"
                                    x:Name="Canvas"
                                    Renderer="{Binding Renderer}"/>
-                <Label Text="{Binding QueryResult}"/>
 
-                <Label Text="Query Time (s)"/>
-                <Entry Text="{Binding QueryEachSeconds}"
-                       Keyboard="Numeric"/>
-
-                <Label Text="Collect Time (s)"/>
-                <Entry Text="{Binding CollectForSeconds}"
-                       Keyboard="Numeric"/>
+                <Label Text="Buffer (s)"/>
+                <Entry Text="{Binding BufferForSeconds}"
+                       Keyboard="Numeric"
+                       IsEnabled="{Binding ChangeConfigurationIsEnabled}"/>
                 
                 <Label Text="Values / s"/>
                 <Entry Text="{Binding ValuesPerSecond}"
-                       Keyboard="Numeric"/>
+                       Keyboard="Numeric"
+                       IsEnabled="{Binding ChangeConfigurationIsEnabled}"/>
+
+                <Label Text="s / Query"/>
+                <Entry Text="{Binding QueryEachSeconds}"
+                       Keyboard="Numeric"
+                       IsEnabled="{Binding ChangeConfigurationIsEnabled}"/>
+
+                <Button Text="{Binding ChangeConfigurationText}"
+                        Command="{Binding ChangeConfigurationCommand}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

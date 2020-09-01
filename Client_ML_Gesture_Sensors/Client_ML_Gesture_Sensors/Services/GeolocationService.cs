@@ -55,7 +55,7 @@ namespace Client_ML_Gesture_Sensors.Services
         public void Subscribe()
         {
             TimerTick = true;
-            Device.StartTimer(TimeSpan.FromMilliseconds(5000), OnTimerTick);
+            Device.StartTimer(TimeSpan.FromSeconds(5), OnTimerTick);
         }
 
         public void Unsubscribe()
