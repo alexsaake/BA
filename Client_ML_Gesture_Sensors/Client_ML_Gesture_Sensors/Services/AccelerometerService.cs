@@ -6,9 +6,17 @@ namespace Client_ML_Gesture_Sensors.Services
     {
         private static Models.Accelerometer accelerometer;
 
+        private const double ConstantG = 9.80665;
+        private float MultiplyBy = 1;
+
         public AccelerometerService()
         {
             accelerometer = new Models.Accelerometer();
+
+            if(DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                MultiplyBy = (float)ConstantG;
+            }
         }
 
         public Models.Accelerometer Get()
@@ -18,6 +26,7 @@ namespace Client_ML_Gesture_Sensors.Services
 
         public void Subscribe()
         {
+            //Subscribe to the update event and start the sensor
             if (Xamarin.Essentials.Accelerometer.IsMonitoring)
                 return;
 
@@ -27,6 +36,7 @@ namespace Client_ML_Gesture_Sensors.Services
 
         public void Unsubscribe()
         {
+            //Unsubscribe from the update event and stop the sensor
             if (!Xamarin.Essentials.Accelerometer.IsMonitoring)
                 return;
 
@@ -36,9 +46,10 @@ namespace Client_ML_Gesture_Sensors.Services
 
         private void Accelerometer_DataUpdated(object sender, AccelerometerChangedEventArgs e)
         {
-            accelerometer.X = e.Reading.Acceleration.X;
-            accelerometer.Y = e.Reading.Acceleration.Y;
-            accelerometer.Z = e.Reading.Acceleration.Z;
+            //Update the X, Y, Z values of the current object
+            accelerometer.X = e.Reading.Acceleration.X * MultiplyBy;
+            accelerometer.Y = e.Reading.Acceleration.Y * MultiplyBy;
+            accelerometer.Z = e.Reading.Acceleration.Z * MultiplyBy;
         }
     }
 }

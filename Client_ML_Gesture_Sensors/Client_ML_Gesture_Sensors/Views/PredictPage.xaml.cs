@@ -1,14 +1,13 @@
 ﻿using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 using Client_ML_Gesture_Sensors.Models;
+using Client_ML_Gesture_Sensors.ViewModels;
 
 namespace Client_ML_Gesture_Sensors.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ConfigurationPage : ContentPage
+    public partial class PredictPage : ContentPage
     {
-        public ConfigurationPage()
+        public PredictPage()
         {
             InitializeComponent();
         }
@@ -16,13 +15,13 @@ namespace Client_ML_Gesture_Sensors.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            AppConfig.AppConfiguration.LoadFromSystemFile();
+            ((PredictViewModel)BindingContext).StartCommand.Execute(null);
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            AppConfig.AppConfiguration.SaveToSystemFile();
+            ((PredictViewModel)BindingContext).StopCommand.Execute(null);
         }
     }
 }

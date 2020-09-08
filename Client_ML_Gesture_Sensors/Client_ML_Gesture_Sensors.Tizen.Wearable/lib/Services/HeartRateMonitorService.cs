@@ -5,7 +5,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 {
     class HeartRateMonitorService
     {
-        private static Models.HeartRateMonitor heartRateMonitor;
+        private Models.HeartRateMonitor heartRateMonitor;
 
         public HeartRateMonitorService()
         {
@@ -21,6 +21,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 
         public void Subscribe()
         {
+            //Subscribe to the update event and start the sensor
             if (!Sensor.HeartRateMonitor.IsSupported || !CheckPrivileges())
                 return;
 
@@ -32,6 +33,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 
         public void Unsubscribe()
         {
+            //Unsubscribe from the update event and stop the sensor
             if (!CheckPrivileges() || (!Sensor.HeartRateMonitor.IsSupported && !_monitor.IsSensing))
                 return;
 
@@ -68,6 +70,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 
         private void Pulsometer_DataUpdated(object sender, Sensor.HeartRateMonitorDataUpdatedEventArgs e)
         {
+            //Update the heartrate value of the current object
             heartRateMonitor.HeartRate = e.HeartRate;
         }
     }

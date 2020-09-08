@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Client_ML_Gesture_Sensors.Droid.Views.DeviceSensorsPage">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
+        <ScrollView Padding="20" VerticalOptions="Fill">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                 <Button Text="Accelerometer"
                             Clicked="OnAccelerometerClicked"/>
                 <Button Text="Barometer"
@@ -13,6 +13,10 @@
                             Clicked="OnGeolocationClicked"/>
                 <Button Text="Gyroscope"
                             Clicked="OnGyroscopeClicked"/>
+                <Button Text="Heart Rate Monitor"
+                            Clicked="OnHeartRateMonitorClicked"/>
+                <Button Text="Light Sensor"
+                            Clicked="OnLightSensorClicked"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

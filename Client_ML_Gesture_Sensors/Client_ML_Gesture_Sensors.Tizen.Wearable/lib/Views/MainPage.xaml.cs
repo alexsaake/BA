@@ -13,9 +13,9 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views
             InitializeComponent();
         }
 
-        async void OnGesturesClicked(object sender, EventArgs e)
+        async void OnPredictClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new GesturePage());
+            await Navigation.PushAsync(new PredictPage());
         }
 
         async void OnRecordClicked(object sender, EventArgs e)
@@ -26,11 +26,6 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views
         async void OnDeviceSensorsClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new DeviceSensorsPage());
-        }
-
-        async void OnConfigurationClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new ConfigurationPage());
         }
     }
 }

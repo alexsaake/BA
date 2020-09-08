@@ -107,9 +107,10 @@ namespace Client_ML_Gesture_Sensors.Renderers
             {
                 if (ValuesMax > 1)
                 {
-                    accelerometerX[i].X = i * (info.Width / (ValuesMax - 1));
-                    accelerometerY[i].X = i * (info.Width / (ValuesMax - 1));
-                    accelerometerZ[i].X = i * (info.Width / (ValuesMax - 1));
+                    int X = i * info.Width / (ValuesMax - 1);
+                    accelerometerX[i].X = X;
+                    accelerometerY[i].X = X;
+                    accelerometerZ[i].X = X;
                 }
                 else
                 {
@@ -198,9 +199,10 @@ namespace Client_ML_Gesture_Sensors.Renderers
             {
                 if(ValuesMax > 1)
                 {
-                    gyroscopeX[i].X = i * (info.Width / (ValuesMax - 1));
-                    gyroscopeY[i].X = i * (info.Width / (ValuesMax - 1));
-                    gyroscopeZ[i].X = i * (info.Width / (ValuesMax - 1));
+                    int X = i * info.Width / (ValuesMax - 1);
+                    gyroscopeX[i].X = X;
+                    gyroscopeY[i].X = X;
+                    gyroscopeZ[i].X = X;
                 }
                 else
                 {
@@ -243,8 +245,11 @@ namespace Client_ML_Gesture_Sensors.Renderers
             }
 
             int GesturePointsCount = Gesture.GesturePointList.Count;
-            DateTime TimeStamp0 = Gesture.GesturePointList[GesturePointsCount - 1].TimeStamp;
-            DateTime TimeStamp1 = Gesture.GesturePointList[0].TimeStamp;
+            TimeSpan TimeSpan0 = TimeSpan.FromSeconds(Gesture.GesturePointList[GesturePointsCount - 1].TimeStamp);
+            TimeSpan TimeSpan1 = TimeSpan.FromSeconds(Gesture.GesturePointList[0].TimeStamp);
+
+            DateTime TimeStamp0 = new DateTime(1970, 1, 1) + TimeSpan0;
+            DateTime TimeStamp1 = new DateTime(1970, 1, 1) + TimeSpan1;
 
             SKCanvas canvas = surface.Canvas;
 
@@ -255,8 +260,8 @@ namespace Client_ML_Gesture_Sensors.Renderers
                 Color = SKColors.Black
             };
 
-            canvas.DrawText(TimeStamp0.ToString("ss.fff"), info.Width - 40, info.Height / 2, gridPaint);
-            canvas.DrawText(TimeStamp1.ToString("ss.fff"), 0, info.Height / 2, gridPaint);
+            canvas.DrawText(TimeStamp0.ToString("mm:ss.fff"), info.Width - 60, info.Height / 2, gridPaint);
+            canvas.DrawText(TimeStamp1.ToString("mm:ss.fff"), 0, info.Height / 2, gridPaint);
         }
 
         public event EventHandler RefreshRequested;

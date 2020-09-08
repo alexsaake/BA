@@ -6,11 +6,11 @@ using Android.App;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Client_ML_Gesture_Sensors.iOS.Android")]
+[assembly: AssemblyTitle("Client_ML_Gesture_Sensors.Android")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Client_ML_Gesture_Sensors.iOS.Android")]
+[assembly: AssemblyProduct("Client_ML_Gesture_Sensors.Android")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

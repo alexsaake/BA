@@ -4,7 +4,7 @@ namespace Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Services
 {
     class LightSensorService
     {
-        private static Models.LightSensor lightSensor;
+        private Models.LightSensor lightSensor;
 
         public LightSensorService()
         {

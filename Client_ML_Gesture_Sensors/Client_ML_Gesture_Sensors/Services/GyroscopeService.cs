@@ -6,9 +6,17 @@ namespace Client_ML_Gesture_Sensors.Services
     {
         private static Models.Gyroscope gyroscope;
 
+        private const double Constant = 180 / System.Math.PI;
+        private float MultiplyBy = 1;
+
         public GyroscopeService()
         {
             gyroscope = new Models.Gyroscope();
+
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                MultiplyBy = (float)Constant;
+            }
         }
 
         public Models.Gyroscope Get()
@@ -36,9 +44,9 @@ namespace Client_ML_Gesture_Sensors.Services
 
         private void Gyroscope_DataUpdated(object sender, GyroscopeChangedEventArgs e)
         {
-            gyroscope.X = e.Reading.AngularVelocity.X;
-            gyroscope.Y = e.Reading.AngularVelocity.Y;
-            gyroscope.Z = e.Reading.AngularVelocity.Z;
+            gyroscope.X = e.Reading.AngularVelocity.X * MultiplyBy;
+            gyroscope.Y = e.Reading.AngularVelocity.Y * MultiplyBy;
+            gyroscope.Z = e.Reading.AngularVelocity.Z * MultiplyBy;
         }
     }
 }

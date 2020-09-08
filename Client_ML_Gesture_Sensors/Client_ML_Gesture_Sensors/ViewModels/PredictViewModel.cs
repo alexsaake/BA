@@ -9,7 +9,7 @@ using Client_ML_Gesture_Sensors.Services;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
-    public class GestureViewModel : BaseViewModel
+    public class PredictViewModel : BaseViewModel
     {
         private GestureService GestureService;
 
@@ -42,7 +42,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                 }
                 else
                 {
-                    ValuesPerSecond = 5;
+                    ValuesPerSecond = 50;
                 }
             }
         }
@@ -68,7 +68,19 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
         }
 
-        public GestureViewModel()
+        private string serverURI;
+
+        public string ServerURI
+        {
+            get { return serverURI; }
+            set
+            {
+                serverURI = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PredictViewModel()
         {
             GestureService = new GestureService();
             Gesture = GestureService.Gesture;
@@ -76,11 +88,13 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             Renderer = new GraphRenderer();
             Renderer.Gesture = Gesture;
 
-            ValuesPerSecond = 5;
+            ValuesPerSecond = 50;
             BufferForSeconds = 12;
 
             APIConnectorService = new APIConnectorService();
             APIConnectorService.Gesture = Gesture;
+            ServerURI = "http://192.168.178.30:5000/api/adl/";
+            APIConnectorService.ServerURI = ServerURI;
 
             QueryEachSeconds = 5;
 

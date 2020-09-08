@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +25,8 @@ namespace Client_ML_Gesture_Sensors.Services
             set { queryEachSeconds = value; }
         }
 
+        public string ServerURI { get;  set; }
+
         public APIConnectorService()
         {
             Client = new HttpClient();
@@ -35,12 +36,13 @@ namespace Client_ML_Gesture_Sensors.Services
 
         public void StartQueryResult()
         {
+            Client.BaseAddress = new Uri(ServerURI);
             IsQuerying = true;
             Device.StartTimer(TimeSpan.FromSeconds(queryEachSeconds), OnTimerTick);
         }
         private bool OnTimerTick()
         {
-            _ = GetPredictionResult();
+            _ = PostPredict();
             return IsQuerying;
         }
 
@@ -49,35 +51,29 @@ namespace Client_ML_Gesture_Sensors.Services
             IsQuerying = false;
         }
 
-        private async Task GetPredictionResult()
+        private async Task PostPredict()
         {
-            string requestStr = "http://192.168.178.30:5000/api/";
-            var requestURI = new Uri(string.Format(requestStr, string.Empty));
+            string jsonString = JsonConvert.SerializeObject(Gesture, Formatting.Indented);
 
-            HttpResponseMessage response = await Client.GetAsync(requestURI);
+            StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await Client.PutAsync("predict/", content);
 
             if (response.IsSuccessStatusCode)
             {
-                Gesture.Prediction = await response.Content.ReadAsStringAsync();
+                Gesture.Activity = await response.Content.ReadAsStringAsync();
             }
         }
 
-        public async Task<bool> Save(Gesture _gesture)
+        public async Task PutSave()
         {
-            if (_gesture.GesturePointList.Count == 20)
-            {
-                string jsonString = JsonConvert.SerializeObject(_gesture, Formatting.Indented);
+            Client.BaseAddress = new Uri(ServerURI);
 
-                StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+            string jsonString = JsonConvert.SerializeObject(Gesture, Formatting.Indented);
 
-                HttpResponseMessage response = await Client.PostAsync("save", content);
+            StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                return response.IsSuccessStatusCode;
-            }
-            else
-            {
-                return false;
-            }
+            HttpResponseMessage response = await Client.PutAsync("save/", content);
         }
     }
 }

@@ -7,11 +7,11 @@
         <model:GyroscopeViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Center">
+        <StackLayout Padding="20" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
             <Label Text="Gyroscope"/>
-            <Label Text="{Binding Gyroscope.X, StringFormat='X: {0:N2} rad/s'}"/>
-            <Label Text="{Binding Gyroscope.Y, StringFormat='Y: {0:N2} rad/s'}"/>
-            <Label Text="{Binding Gyroscope.Z, StringFormat='Z: {0:N2} rad/s'}"/>
+            <Label Text="{Binding Gyroscope.X, StringFormat='X: {0:N2} degrees/s'}"/>
+            <Label Text="{Binding Gyroscope.Y, StringFormat='Y: {0:N2} degrees/s'}"/>
+            <Label Text="{Binding Gyroscope.Z, StringFormat='Z: {0:N2} degrees/s'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

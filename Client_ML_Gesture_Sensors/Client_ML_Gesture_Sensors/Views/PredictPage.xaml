@@ -3,19 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:Client_ML_Gesture_Sensors.ViewModels"
              xmlns:ctrl="clr-namespace:Client_ML_Gesture_Sensors.Controls"
-             x:Class="Client_ML_Gesture_Sensors.Views.GesturePage">
+             x:Class="Client_ML_Gesture_Sensors.Views.PredictPage">
     <ContentPage.BindingContext>
-        <model:GestureViewModel/>
+        <model:PredictViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout HorizontalOptions="Center">
-                <Label Text="{Binding Gesture.Prediction}"/>
-                
+        <ScrollView Padding="20" VerticalOptions="Fill">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                 <ctrl:SKRenderView HeightRequest="200"
                                    WidthRequest="400"
                                    x:Name="Canvas"
                                    Renderer="{Binding Renderer}"/>
+                
+                <Label Text="Recognized Activity"/>
+                <Label Text="{Binding Gesture.Prediction}"/>
 
                 <Label Text="Buffer (s)"/>
                 <Entry Text="{Binding BufferForSeconds}"
@@ -27,9 +28,17 @@
                        Keyboard="Numeric"
                        IsEnabled="{Binding ChangeConfigurationIsEnabled}"/>
 
-                <Label Text="s / Query"/>
+                <Label Text="Worn on right hand"/>
+                <Switch IsToggled="{Binding Gesture.WornWrist}"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+
+                <Label Text="Query Each Seconds"/>
                 <Entry Text="{Binding QueryEachSeconds}"
                        Keyboard="Numeric"
+                       IsEnabled="{Binding ChangeConfigurationIsEnabled}"/>
+
+                <Label Text="Server URI"/>
+                <Entry Text="{Binding ServerURI}"
                        IsEnabled="{Binding ChangeConfigurationIsEnabled}"/>
 
                 <Button Text="{Binding ChangeConfigurationText}"

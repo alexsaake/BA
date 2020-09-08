@@ -7,13 +7,11 @@
         <model:GeolocationViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout HorizontalOptions="Center">
-                <Label Text="Geolocation"/>
-                <Label Text="{Binding Geolocation.Latitude, StringFormat='Latitude: {0:N7} °'}"/>
-                <Label Text="{Binding Geolocation.Longitude, StringFormat='Longitude: {0:N7} °'}"/>
-                <Label Text="{Binding Geolocation.Altitude, StringFormat='Altitude: {0} m'}"/>
-            </StackLayout>
-        </ScrollView>
+        <StackLayout Padding="20" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+            <Label Text="Geolocation"/>
+            <Label Text="{Binding Geolocation.Latitude, StringFormat='Latitude: {0:N7} °'}"/>
+            <Label Text="{Binding Geolocation.Longitude, StringFormat='Longitude: {0:N7} °'}"/>
+            <Label Text="{Binding Geolocation.Altitude, StringFormat='Altitude: {0} m'}"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

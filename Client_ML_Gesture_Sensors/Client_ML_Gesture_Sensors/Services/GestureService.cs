@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
@@ -71,42 +72,32 @@ namespace Client_ML_Gesture_Sensors.Services
             }
         }
 
-        public void StartRecordingContinuously()
+        public async void StartRecordingContinuously()
         {
             if (!isRecording)
             {
                 isRecording = true;
-                Device.StartTimer(TimeSpan.FromMilliseconds(1000 / valuesPerSecond), OnTimerTickContinuously);
+                while(isRecording)
+                {
+                    AddPoint();
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000 / valuesPerSecond));
+                }
             }
         }
 
-        private bool OnTimerTickContinuously()
-        {
-            AddPoint();
-            return isRecording;
-        }
-
-        public void StartRecordingValuesMax()
+        public async void StartRecordingValuesMax()
         {
             if (!isRecording)
             {
-                isRecording = true;
                 Gesture.GesturePointList.Clear();
-                Device.StartTimer(TimeSpan.FromMilliseconds(1000 / valuesPerSecond), OnTimerTickValuesMax);
+                isRecording = true;
+                while(Gesture.GesturePointList.Count < valuesMax)
+                {
+                    AddPoint();
+                    await Task.Delay(TimeSpan.FromMilliseconds(1000 / valuesPerSecond));
+                }
+                isRecording = false;
             }
-        }
-
-        private bool OnTimerTickValuesMax()
-        {
-            if(Gesture.GesturePointList.Count < valuesMax)
-            {
-                AddPoint();
-            }
-            else
-            {
-                StopRecording();
-            }
-            return isRecording;
         }
 
         public void StopRecording()

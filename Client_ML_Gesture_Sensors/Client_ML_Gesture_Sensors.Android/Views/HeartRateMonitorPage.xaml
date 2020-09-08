@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:model="clr-namespace:Client_ML_Gesture_Sensors.Tizen.Wearable.lib.ViewModels"
-             x:Class="Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views.LightSensorPage">
+             xmlns:model="clr-namespace:Client_ML_Gesture_Sensors.Droid.ViewModels"
+             x:Class="Client_ML_Gesture_Sensors.Droid.Views.HeartRateMonitorPage">
     <ContentPage.BindingContext>
-        <model:LightSensorViewModel/>
+        <model:HeartRateMonitorViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Padding="20" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
-            <Label Text="Light Sensor"/>
-            <Label Text="{Binding LightSensor.Level, StringFormat='Level: {0} lm/m²'}"/>
+            <Label Text="Heart Rate Monitor"/>
+            <Label Text="{Binding HeartRateMonitor.HeartRate, StringFormat='Heart Rate: {0} b/60s'}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

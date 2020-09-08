@@ -4,9 +4,9 @@ namespace Client_ML_Gesture_Sensors.Models
 {
     public class GesturePoint : BaseModel
     {
-        private DateTime timeStamp;
+        private int timeStamp;
 
-        public DateTime TimeStamp
+        public int TimeStamp
         {
             get { return timeStamp; }
             set
@@ -43,7 +43,9 @@ namespace Client_ML_Gesture_Sensors.Models
         public GesturePoint(Accelerometer accelerometer,
             Gyroscope gyroscope)
         {
-            TimeStamp = DateTime.Now;
+            TimeSpan t = (DateTime.Now - new DateTime(1970, 1, 1));
+
+            TimeStamp = (int)t.TotalSeconds;
 
             Accelerometer = new Accelerometer();
             Gyroscope = new Gyroscope();

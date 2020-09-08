@@ -1,21 +1,59 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using Xamarin.Essentials;
 
 namespace Client_ML_Gesture_Sensors.Models
 {
     public class Gesture : BaseModel
     {
-        private string prediction;
+        private string activity;
 
-        public string Prediction
+        public string Activity
         {
-            get { return prediction; }
+            get { return activity; }
             set
             {
-                prediction = value;
+                activity = value;
                 OnPropertyChanged();
             }
         }
+
+        private string wearableType;
+
+        public string WearableType
+        {
+            get { return wearableType; }
+            set
+            {
+                wearableType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string username;
+
+        public string Username
+        {
+            get { return username; }
+            set
+            {
+                username = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //wrist of the smartwatch: left = false, right = true
+        private bool wornWrist;
+
+        public bool WornWrist
+        {
+            get { return wornWrist; }
+            set
+            {
+                wornWrist = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         private ObservableCollection<GesturePoint> gesturePointList;
 
@@ -32,6 +70,7 @@ namespace Client_ML_Gesture_Sensors.Models
         public Gesture()
         {
             GesturePointList = new ObservableCollection<GesturePoint>();
+            WearableType = DeviceInfo.Manufacturer.ToString() + DeviceInfo.Model.ToString();
         }
     }
 }

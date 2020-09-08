@@ -8,24 +8,32 @@
         <model:RecordViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout HorizontalOptions="Center">
-                <Button Text="{Binding StartStopText}"
-                        BackgroundColor="{Binding StartStopBackgroundColor}"
-                        IsEnabled="{Binding StartStopIsEnabled}"
-                        Command="{Binding StartCollectCommand}"/>
-                
+        <ScrollView Padding="20" VerticalOptions="Fill">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                 <ctrl:SKRenderView HeightRequest="200"
                                    WidthRequest="400"
                                    x:Name="Canvas"
                                    Renderer="{Binding Renderer}"/>
                 
-                <Label Text="Start Time (s)"/>
+                <Button Text="{Binding StartStopText}"
+                        BackgroundColor="{Binding StartStopBackgroundColor}"
+                        IsEnabled="{Binding StartStopIsEnabled}"
+                        Command="{Binding StartCollectCommand}"/>
+
+                <Label Text="Activity"/>
+                <Entry Text="{Binding Gesture.Activity}"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+
+                <Button Text="Send To Server"
+                        IsEnabled="{Binding StartStopIsEnabled}"
+                        Command="{Binding SendToServerCommand}"/>
+
+                <Label Text="Record Delay (s)"/>
                 <Entry Text="{Binding StartAfterSeconds}"
                        Keyboard="Numeric"
                        IsEnabled="{Binding StartStopIsEnabled}"/>
-                
-                <Label Text="Collect Time (s)"/>
+
+                <Label Text="Record Time (s)"/>
                 <Entry Text="{Binding CollectForSeconds}"
                        Keyboard="Numeric"
                        IsEnabled="{Binding StartStopIsEnabled}"/>
@@ -33,6 +41,22 @@
                 <Label Text="Values / s"/>
                 <Entry Text="{Binding ValuesPerSecond}"
                        Keyboard="Numeric"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+
+                <Label Text="Worn on right hand"/>
+                <Switch IsToggled="{Binding Gesture.WornWrist}"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+
+                <Label Text="Username"/>
+                <Entry Text="{Binding Gesture.Username}"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+
+                <Label Text="Wearable Type"/>
+                <Entry Text="{Binding Gesture.WearableType}"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+
+                <Label Text="Server URI"/>
+                <Entry Text="{Binding ServerURI}"
                        IsEnabled="{Binding StartStopIsEnabled}"/>
             </StackLayout>
         </ScrollView>

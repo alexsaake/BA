@@ -34,5 +34,15 @@ namespace Client_ML_Gesture_Sensors.Droid.Views
         {
             await Navigation.PushAsync(new GyroscopePage());
         }
+
+        async void OnLightSensorClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new LightSensorPage());
+        }
+
+        async void OnHeartRateMonitorClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new HeartRateMonitorPage());
+        }
     }
 }

@@ -7,7 +7,7 @@
         <model:AccelerometerViewModel/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Center">
+        <StackLayout Padding="20" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
             <Label Text="Accelerometer"/>
             <Label Text="{Binding Accelerometer.X, StringFormat='X: {0:N2} m/s²'}"/>
             <Label Text="{Binding Accelerometer.Y, StringFormat='Y: {0:N2} m/s²'}"/>

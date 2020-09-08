@@ -15,9 +15,9 @@ namespace Client_ML_Gesture_Sensors.ViewModels
 
         private Gesture Gesture;
 
-        public GraphRenderer Renderer { get; set; }
+        private APIConnectorService APIConnectorService;
 
-        private VibrationService VibrationService;
+        public GraphRenderer Renderer { get; set; }
 
         private int valuesPerSecond;
 
@@ -36,7 +36,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                 }
                 else
                 {
-                    ValuesPerSecond = 5;
+                    ValuesPerSecond = 50;
                 }
             }
         }
@@ -62,6 +62,18 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
         }
 
+        private string serverURI;
+
+        public string ServerURI
+        {
+            get { return serverURI; }
+            set
+            {
+                serverURI = value;
+                OnPropertyChanged();
+            }
+        }
+
         public RecordViewModel()
         {
             GestureService = new GestureService();
@@ -70,18 +82,22 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             Renderer = new GraphRenderer();
             Renderer.Gesture = Gesture;
 
-            valuesPerSecond = 5;
-            ValuesPerSecond = 5;
+            valuesPerSecond = 50;
+            ValuesPerSecond = 50;
             CollectForSeconds = 12;
-            StartAfterSeconds = 3;
+            StartAfterSeconds = 1;
 
-            VibrationService = new VibrationService();
+            APIConnectorService = new APIConnectorService();
+            APIConnectorService.Gesture = Gesture;
+            ServerURI = "http://192.168.178.30:5000/api/adl/";
+            APIConnectorService.ServerURI = ServerURI;
 
             StartCommand = new Command(Start);
             StopCommand = new Command(Stop);
             StartCollectCommand = new Command(StartCollect);
+            SendToServerCommand = new Command(SendToServer);
 
-            StartStopText = "Start Collecting";
+            StartStopText = "Start Recording";
             StartStopBackgroundColor = Color.Default;
             StartStopIsEnabled = true;
         }
@@ -128,7 +144,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                 }
                 else
                 {
-                    StartAfterSeconds = 3;
+                    StartAfterSeconds = 1;
                 }
             }
         }
@@ -193,7 +209,6 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                 if(!GestureService.IsRecording)
                 {
                     GestureService.StartRecordingValuesMax();
-                    VibrationService.Vibrate(500);
                 }
                 StartStopText = collectSecondsRemaining.ToString();
                 StartStopBackgroundColor = Color.Green;
@@ -201,15 +216,27 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             else
             {
-                StartStopText = "Start Collecting";
+                GestureService.StopRecording();
+                StartStopText = "Start Recording";
                 StartStopBackgroundColor = Color.Default;
                 StartStopIsEnabled = true;
-
-                VibrationService.Vibrate(300);
-                VibrationService.Vibrate(300);
             }
 
             return !StartStopIsEnabled;
+        }
+
+        public ICommand SendToServerCommand { get; }
+
+        void SendToServer()
+        {
+            try
+            {
+                _ = APIConnectorService.PutSave();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
     }

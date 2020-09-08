@@ -11,9 +11,8 @@
     </ui-application>
     <shortcut-list />
     <privileges>
-        <privilege>http://tizen.org/privilege/healthinfo</privilege>
         <privilege>http://tizen.org/privilege/location</privilege>
-        <privilege>http://tizen.org/privilege/haptic</privilege>
+        <privilege>http://tizen.org/privilege/healthinfo</privilege>
         <privilege>http://tizen.org/privilege/internet</privilege>
     </privileges>
     <dependencies />

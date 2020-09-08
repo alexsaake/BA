@@ -3,9 +3,9 @@
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
 	<application android:label="Client_ML_Gesture_Sensors.Droid"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.BODY_SENSORS" />
 	<uses-permission android:name="android.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
 </manifest>

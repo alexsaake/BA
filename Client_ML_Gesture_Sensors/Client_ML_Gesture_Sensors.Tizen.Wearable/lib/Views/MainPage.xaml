@@ -6,17 +6,13 @@
              mc:Ignorable="d"
              x:Class="Client_ML_Gesture_Sensors.Tizen.Wearable.lib.Views.MainPage">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <Button Text="Gestures"
-                            Clicked="OnGesturesClicked"/>
-                <Button Text="Record"
-                            Clicked="OnRecordClicked"/>
-                <Button Text="Device Sensors"
-                            Clicked="OnDeviceSensorsClicked"/>
-                <Button Text="Configuration"
-                            Clicked="OnConfigurationClicked"/>
-            </StackLayout>
-        </ScrollView>
+        <StackLayout Padding="20" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+            <Button Text="Predict ADL"
+                    Clicked="OnPredictClicked"/>
+            <Button Text="Record ADL"
+                    Clicked="OnRecordClicked"/>
+            <Button Text="Device Sensors"
+                    Clicked="OnDeviceSensorsClicked"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
