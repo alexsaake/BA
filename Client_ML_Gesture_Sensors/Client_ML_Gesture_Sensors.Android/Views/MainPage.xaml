@@ -6,13 +6,15 @@
              mc:Ignorable="d"
              x:Class="Client_ML_Gesture_Sensors.Droid.Views.MainPage">
     <ContentPage.Content>
-        <StackLayout Padding="20" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
-            <Button Text="Predict ADL"
+        <ScrollView Padding="20" VerticalOptions="Fill">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Button Text="Predict ADL"
                     Clicked="OnPredictClicked"/>
-            <Button Text="Record ADL"
+                <Button Text="Record ADL"
                     Clicked="OnRecordClicked"/>
-            <Button Text="Device Sensors"
+                <Button Text="Device Sensors"
                     Clicked="OnDeviceSensorsClicked"/>
-        </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -14,6 +14,7 @@
         <privilege>http://tizen.org/privilege/location</privilege>
         <privilege>http://tizen.org/privilege/healthinfo</privilege>
         <privilege>http://tizen.org/privilege/internet</privilege>
+        <privilege>http://tizen.org/privilege/display</privilege>
     </privileges>
     <dependencies />
     <provides-appdefined-privileges />

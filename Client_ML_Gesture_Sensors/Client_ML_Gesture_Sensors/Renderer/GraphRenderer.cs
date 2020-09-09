@@ -207,9 +207,9 @@ namespace Client_ML_Gesture_Sensors.Renderers
             {
                 return;
             }
-            int GesturePointsCount = Gesture.GesturePointList.Count;
-            string TimeStamp0 = Gesture.GesturePointList[GesturePointsCount - 1].TimeStamp.Substring(7);
-            string TimeStamp1 = Gesture.GesturePointList[0].TimeStamp.Substring(7);
+
+            string TimeStamp0 = Gesture.GesturePointList[Gesture.GesturePointList.Count - 1].TimeStamp.Substring(8);
+            string TimeStamp1 = Gesture.GesturePointList[0].TimeStamp.Substring(8);
 
             SKCanvas canvas = surface.Canvas;
 

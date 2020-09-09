@@ -44,15 +44,14 @@ namespace Client_ML_Gesture_Sensors.Models
             Gyroscope gyroscope)
         {
             TimeSpan tsPOSIX = DateTime.Now - new DateTime(1970, 1, 1);
-            decimal dcPOSIX = Convert.ToDecimal(Math.Floor(tsPOSIX.TotalMilliseconds));
-            TimeStamp = dcPOSIX.ToString();
+            TimeStamp = Math.Floor(tsPOSIX.TotalMilliseconds).ToString();
 
             Accelerometer = new Accelerometer();
-            Gyroscope = new Gyroscope();
-
             Accelerometer.X = accelerometer.X;
             Accelerometer.Y = accelerometer.Y;
             Accelerometer.Z = accelerometer.Z;
+
+            Gyroscope = new Gyroscope();
             Gyroscope.X = gyroscope.X;
             Gyroscope.Y = gyroscope.Y;
             Gyroscope.Z = gyroscope.Z;

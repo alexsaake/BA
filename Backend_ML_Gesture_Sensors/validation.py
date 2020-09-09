@@ -5,7 +5,6 @@ import datetime
 import pandas as pd
 import joblib, os
 from sklearn.neural_network import MLPClassifier
-import pdb
 import math
 
 def get_prediction(jsonDict):

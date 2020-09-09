@@ -1,25 +1,15 @@
-﻿using Android.Content;
+﻿using Android.App;
+using Android.Content;
 using Android.Hardware;
-using Java.Interop;
 using System;
 
 namespace Client_ML_Gesture_Sensors.Droid.Services
 {
-    class HeartRateMonitorService : ISensorEventListener
+    class HeartRateMonitorService : Java.Lang.Object, ISensorEventListener
     {
         private SensorManager sensorManager;
         private Sensor _heartRateMonitor;
         private Models.HeartRateMonitor heartRateMonitor;
-
-        public IntPtr Handle => throw new NotImplementedException();
-
-        public int JniIdentityHashCode => throw new NotImplementedException();
-
-        public JniObjectReference PeerReference => throw new NotImplementedException();
-
-        public JniPeerMembers JniPeerMembers => throw new NotImplementedException();
-
-        public JniManagedPeerStates JniManagedPeerState => throw new NotImplementedException();
 
         public HeartRateMonitorService()
         {
@@ -34,9 +24,15 @@ namespace Client_ML_Gesture_Sensors.Droid.Services
         public void Subscribe()
         {
             //Subscribe to the update event and start the sensor
-            sensorManager = (SensorManager)Android.App.Application.Context.GetSystemService(Context.SensorService);
-            _heartRateMonitor = sensorManager.GetDefaultSensor(SensorType.HeartRate);
-            sensorManager.RegisterListener(this, (Sensor)_heartRateMonitor, SensorDelay.Ui);
+            this.sensorManager = Application.Context.GetSystemService(Context.SensorService) as SensorManager;
+            if (this.sensorManager == null)
+            {
+                throw new NotSupportedException("Sensor Manager not supported");
+            }
+
+            this._heartRateMonitor = this.sensorManager.GetDefaultSensor(SensorType.HeartRate);
+
+            this.sensorManager.RegisterListener(this, this._heartRateMonitor, SensorDelay.Ui);
         }
 
         public void Unsubscribe()
@@ -55,47 +51,6 @@ namespace Client_ML_Gesture_Sensors.Droid.Services
 
         public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
         {
-            throw new NotImplementedException ();
-        }
-
-        public void SetJniIdentityHashCode(int value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetPeerReference(JniObjectReference reference)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetJniManagedPeerState(JniManagedPeerStates value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnregisterFromRuntime()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DisposeUnlessReferenced()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Disposed()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Finalized()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Client_ML_Gesture_Sensors.Services
 
             HttpResponseMessage response = await Client.PostAsync("predict/", content);
 
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode) 
             {
                 Gesture.Activity = await response.Content.ReadAsStringAsync();
             }

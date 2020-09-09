@@ -1,5 +1,7 @@
-﻿using Client_ML_Gesture_Sensors.ViewModels;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+using Xamarin.Essentials;
+
+using Client_ML_Gesture_Sensors.ViewModels;
 
 namespace Client_ML_Gesture_Sensors.Views
 {
@@ -14,12 +16,20 @@ namespace Client_ML_Gesture_Sensors.Views
         {
             base.OnAppearing();
             ((RecordViewModel)BindingContext).StartCommand.Execute(null);
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                DeviceDisplay.KeepScreenOn = true;
+            }
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
             ((RecordViewModel)BindingContext).StopCommand.Execute(null);
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                DeviceDisplay.KeepScreenOn = false;
+            }
         }
     }
 }

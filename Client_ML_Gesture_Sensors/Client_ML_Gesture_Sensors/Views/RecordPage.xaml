@@ -10,19 +10,19 @@
     <ContentPage.Content>
         <ScrollView Padding="20" VerticalOptions="Fill">
             <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                <ctrl:SKRenderView HeightRequest="200"
-                                   WidthRequest="400"
-                                   x:Name="Canvas"
-                                   Renderer="{Binding Renderer}"/>
-                
+                <Label Text="Activity"/>
+                <Entry Text="{Binding Gesture.Activity}"
+                       IsEnabled="{Binding StartStopIsEnabled}"/>
+
                 <Button Text="{Binding StartStopText}"
                         BackgroundColor="{Binding StartStopBackgroundColor}"
                         IsEnabled="{Binding StartStopIsEnabled}"
                         Command="{Binding StartCollectCommand}"/>
 
-                <Label Text="Activity"/>
-                <Entry Text="{Binding Gesture.Activity}"
-                       IsEnabled="{Binding StartStopIsEnabled}"/>
+                <ctrl:SKRenderView HeightRequest="200"
+                                   WidthRequest="400"
+                                   x:Name="Canvas"
+                                   Renderer="{Binding Renderer}"/>
 
                 <Button Text="Send To Server"
                         IsEnabled="{Binding StartStopIsEnabled}"

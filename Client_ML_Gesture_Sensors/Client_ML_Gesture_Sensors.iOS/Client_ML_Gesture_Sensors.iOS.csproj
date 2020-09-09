@@ -143,7 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.5.0.495" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Client_ML_Gesture_Sensors.watchOS\Client_ML_Gesture_Sensors.watchOS.WatchOSApp\Client_ML_Gesture_Sensors.watchOS.WatchOSApp.csproj">
