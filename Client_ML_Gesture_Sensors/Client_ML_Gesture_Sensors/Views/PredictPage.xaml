@@ -16,7 +16,7 @@
                                    Renderer="{Binding Renderer}"/>
                 
                 <Label Text="Recognized Activity"/>
-                <Label Text="{Binding Gesture.Prediction}"/>
+                <Label Text="{Binding Gesture.Activity}"/>
 
                 <Label Text="Buffer (s)"/>
                 <Entry Text="{Binding BufferForSeconds}"

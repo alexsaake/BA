@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Threading.Tasks;
 
 using SkiaSharp;
 
@@ -24,7 +25,39 @@ namespace Client_ML_Gesture_Sensors.Renderers
             }
         }
 
-        public int ValuesMax { get; set; }
+        private int collectForSeconds;
+
+        public int CollectForSeconds
+        {
+            get { return collectForSeconds; }
+            set
+            {
+                collectForSeconds = value;
+                paintValuesMax = collectForSeconds * paintValuesPerSecond;
+            }
+        }
+
+        private int valuesPerSecond;
+
+        public int ValuesPerSecond
+        {
+            get { return valuesPerSecond; }
+            set
+            {
+                valuesPerSecond = value;
+                paintScale = (double)valuesPerSecond / (double)paintValuesPerSecond;
+            }
+        }
+
+        private int paintValuesPerSecond;
+        private int paintValuesMax;
+        private double paintScale;
+
+        public GraphRenderer()
+        {
+            paintValuesPerSecond = 10;
+            lastUpdate = DateTime.Now;
+        }
 
         private void CollectionChangedMethod(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -35,17 +68,56 @@ namespace Client_ML_Gesture_Sensors.Renderers
 
         private double gyroscopeScale = -0.08;
 
+        private DateTime lastUpdate;
+
         public void PaintSurface(SKSurface surface, SKImageInfo info)
+        {
+            if(DateTime.Now - lastUpdate > TimeSpan.FromSeconds(1))
+            {
+                lastUpdate = DateTime.Now;
+                PaintGrid(surface, info);
+
+                if(Gesture != null)
+                {
+                    PaintAccelerometer(surface, info);
+                    PaintGyroscope(surface, info);
+                    PaintTimestamp(surface, info);
+                }
+            }
+        }
+
+        SKPaint gridPaint = new SKPaint
+        {
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 1,
+            Color = SKColors.Black
+        };
+
+        SKPaint XPaintLine = new SKPaint
+        {
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 1,
+            Color = SKColors.Blue
+        };
+
+        SKPaint YPaintLine = new SKPaint
+        {
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 1,
+            Color = SKColors.Red
+        };
+
+        SKPaint ZPaintLine = new SKPaint
+        {
+            Style = SKPaintStyle.Stroke,
+            StrokeWidth = 1,
+            Color = SKColors.Green
+        };
+
+        public void PaintGrid(SKSurface surface, SKImageInfo info)
         {
             SKCanvas canvas = surface.Canvas;
             canvas.Clear(SKColors.White);
-
-            SKPaint gridPaint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Black
-            };
 
             canvas.DrawLine(0, info.Height / 4 * 1, info.Width, info.Height / 4 * 1, gridPaint); //x-axis accelerometer
             canvas.DrawText("Accelerometer", 5, 10, gridPaint);
@@ -57,73 +129,23 @@ namespace Client_ML_Gesture_Sensors.Renderers
         {
             SKCanvas canvas = surface.Canvas;
 
-            SKPoint[] accelerometerX = new SKPoint[ValuesMax];
-            SKPoint[] accelerometerY = new SKPoint[ValuesMax];
-            SKPoint[] accelerometerZ = new SKPoint[ValuesMax];
+            SKPoint[] accelerometerX = new SKPoint[paintValuesMax];
+            SKPoint[] accelerometerY = new SKPoint[paintValuesMax];
+            SKPoint[] accelerometerZ = new SKPoint[paintValuesMax];
 
-            SKPaint XPaintLine = new SKPaint
+            for (int i = 0; i < paintValuesMax; i++)
             {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Blue
-            };
+                int X = i * info.Width / (paintValuesMax - 1);
+                accelerometerX[i].X = X;
+                accelerometerY[i].X = X;
+                accelerometerZ[i].X = X;
 
-            SKPaint XPaintPoint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Blue
-            };
-
-            SKPaint YPaintLine = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Red
-            };
-
-            SKPaint YPaintPoint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Red
-            };
-
-            SKPaint ZPaintLine = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Green
-            };
-
-            SKPaint ZPaintPoint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Green
-            };
-
-            for (int i = 0; i < ValuesMax; i++)
-            {
-                if (ValuesMax > 1)
+                int Y = Convert.ToInt32(Math.Floor(i * paintScale));
+                if (Y < Gesture.GesturePointList.Count)
                 {
-                    int X = i * info.Width / (ValuesMax - 1);
-                    accelerometerX[i].X = X;
-                    accelerometerY[i].X = X;
-                    accelerometerZ[i].X = X;
-                }
-                else
-                {
-                    accelerometerX[i].X = 0;
-                    accelerometerY[i].X = 0;
-                    accelerometerZ[i].X = 0;
-                }
-
-                if (Gesture != null && i < Gesture.GesturePointList.Count)
-                {
-                    accelerometerX[i].Y = Gesture.GesturePointList[i].Accelerometer.X * (float)accelerometerScale + (info.Height / 4 * 1);
-                    accelerometerY[i].Y = Gesture.GesturePointList[i].Accelerometer.Y * (float)accelerometerScale + (info.Height / 4 * 1);
-                    accelerometerZ[i].Y = Gesture.GesturePointList[i].Accelerometer.Z * (float)accelerometerScale + (info.Height / 4 * 1);
+                    accelerometerX[i].Y = Gesture.GesturePointList[Y].Accelerometer.X * (float)accelerometerScale + (info.Height / 4 * 1);
+                    accelerometerY[i].Y = Gesture.GesturePointList[Y].Accelerometer.Y * (float)accelerometerScale + (info.Height / 4 * 1);
+                    accelerometerZ[i].Y = Gesture.GesturePointList[Y].Accelerometer.Z * (float)accelerometerScale + (info.Height / 4 * 1);
                 }
                 else
                 {
@@ -139,83 +161,29 @@ namespace Client_ML_Gesture_Sensors.Renderers
                     canvas.DrawLine(accelerometerZ[i - 1], accelerometerZ[i], ZPaintLine);
                 }
             }
-
-            canvas.DrawPoints(SKPointMode.Points, accelerometerX, XPaintPoint);
-            canvas.DrawPoints(SKPointMode.Points, accelerometerY, YPaintPoint);
-            canvas.DrawPoints(SKPointMode.Points, accelerometerZ, ZPaintPoint);
         }
 
         public void PaintGyroscope(SKSurface surface, SKImageInfo info)
         {
             SKCanvas canvas = surface.Canvas;
 
-            SKPoint[] gyroscopeX = new SKPoint[ValuesMax];
-            SKPoint[] gyroscopeY = new SKPoint[ValuesMax];
-            SKPoint[] gyroscopeZ = new SKPoint[ValuesMax];
+            SKPoint[] gyroscopeX = new SKPoint[paintValuesMax];
+            SKPoint[] gyroscopeY = new SKPoint[paintValuesMax];
+            SKPoint[] gyroscopeZ = new SKPoint[paintValuesMax];
 
-            SKPaint XPaintLine = new SKPaint
+            for (int i = 0; i < paintValuesMax; i++)
             {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Blue
-            };
+                int X = i * info.Width / (paintValuesMax - 1);
+                gyroscopeX[i].X = X;
+                gyroscopeY[i].X = X;
+                gyroscopeZ[i].X = X;
 
-            SKPaint XPaintPoint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Blue
-            };
-
-            SKPaint YPaintLine = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Red
-            };
-
-            SKPaint YPaintPoint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Red
-            };
-
-            SKPaint ZPaintLine = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Green
-            };
-
-            SKPaint ZPaintPoint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Green
-            };
-
-            for (int i = 0; i < ValuesMax; i++)
-            {
-                if(ValuesMax > 1)
+                int Y = Convert.ToInt32(Math.Floor(i * paintScale));
+                if (Y < Gesture.GesturePointList.Count)
                 {
-                    int X = i * info.Width / (ValuesMax - 1);
-                    gyroscopeX[i].X = X;
-                    gyroscopeY[i].X = X;
-                    gyroscopeZ[i].X = X;
-                }
-                else
-                {
-                    gyroscopeX[i].X = 0;
-                    gyroscopeY[i].X = 0;
-                    gyroscopeZ[i].X = 0;
-                }
-
-                if (Gesture != null && i < Gesture.GesturePointList.Count)
-                {
-                    gyroscopeX[i].Y = Gesture.GesturePointList[i].Gyroscope.X * (float)gyroscopeScale + (info.Height / 4 * 3);
-                    gyroscopeY[i].Y = Gesture.GesturePointList[i].Gyroscope.Y * (float)gyroscopeScale + (info.Height / 4 * 3);
-                    gyroscopeZ[i].Y = Gesture.GesturePointList[i].Gyroscope.Z * (float)gyroscopeScale + (info.Height / 4 * 3);
+                    gyroscopeX[i].Y = Gesture.GesturePointList[Y].Gyroscope.X * (float)gyroscopeScale + (info.Height / 4 * 3);
+                    gyroscopeY[i].Y = Gesture.GesturePointList[Y].Gyroscope.Y * (float)gyroscopeScale + (info.Height / 4 * 3);
+                    gyroscopeZ[i].Y = Gesture.GesturePointList[Y].Gyroscope.Z * (float)gyroscopeScale + (info.Height / 4 * 3);
                 }
                 else
                 {
@@ -231,10 +199,6 @@ namespace Client_ML_Gesture_Sensors.Renderers
                     canvas.DrawLine(gyroscopeZ[i - 1], gyroscopeZ[i], ZPaintLine);
                 }
             }
-
-            canvas.DrawPoints(SKPointMode.Points, gyroscopeX, XPaintPoint);
-            canvas.DrawPoints(SKPointMode.Points, gyroscopeY, YPaintPoint);
-            canvas.DrawPoints(SKPointMode.Points, gyroscopeZ, ZPaintPoint);
         }
 
         public void PaintTimestamp(SKSurface surface, SKImageInfo info)
@@ -243,25 +207,14 @@ namespace Client_ML_Gesture_Sensors.Renderers
             {
                 return;
             }
-
             int GesturePointsCount = Gesture.GesturePointList.Count;
-            TimeSpan TimeSpan0 = TimeSpan.FromSeconds(Gesture.GesturePointList[GesturePointsCount - 1].TimeStamp);
-            TimeSpan TimeSpan1 = TimeSpan.FromSeconds(Gesture.GesturePointList[0].TimeStamp);
-
-            DateTime TimeStamp0 = new DateTime(1970, 1, 1) + TimeSpan0;
-            DateTime TimeStamp1 = new DateTime(1970, 1, 1) + TimeSpan1;
+            string TimeStamp0 = Gesture.GesturePointList[GesturePointsCount - 1].TimeStamp.Substring(7);
+            string TimeStamp1 = Gesture.GesturePointList[0].TimeStamp.Substring(7);
 
             SKCanvas canvas = surface.Canvas;
 
-            SKPaint gridPaint = new SKPaint
-            {
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1,
-                Color = SKColors.Black
-            };
-
-            canvas.DrawText(TimeStamp0.ToString("mm:ss.fff"), info.Width - 60, info.Height / 2, gridPaint);
-            canvas.DrawText(TimeStamp1.ToString("mm:ss.fff"), 0, info.Height / 2, gridPaint);
+            canvas.DrawText(TimeStamp0, info.Width - 40, info.Height / 2, gridPaint);
+            canvas.DrawText(TimeStamp1, 0, info.Height / 2, gridPaint);
         }
 
         public event EventHandler RefreshRequested;

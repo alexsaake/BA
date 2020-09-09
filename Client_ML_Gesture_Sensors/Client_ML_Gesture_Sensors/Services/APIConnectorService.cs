@@ -57,7 +57,7 @@ namespace Client_ML_Gesture_Sensors.Services
 
             StringContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await Client.PutAsync("predict/", content);
+            HttpResponseMessage response = await Client.PostAsync("predict/", content);
 
             if (response.IsSuccessStatusCode)
             {

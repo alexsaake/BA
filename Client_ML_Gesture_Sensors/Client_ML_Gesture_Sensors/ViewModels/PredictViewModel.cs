@@ -18,7 +18,11 @@ namespace Client_ML_Gesture_Sensors.ViewModels
         public Gesture Gesture
         {
             get { return gesture; }
-            set { gesture = value; OnPropertyChanged(); }
+            set
+            {
+                gesture = value;
+                OnPropertyChanged();
+            }
         }
 
         private APIConnectorService APIConnectorService;
@@ -38,7 +42,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                     OnPropertyChanged();
                     GestureService.ValuesPerSecond = ValuesPerSecond;
                     GestureService.ValuesMax = ValuesPerSecond * BufferForSeconds;
-                    Renderer.ValuesMax = ValuesPerSecond * BufferForSeconds;
+                    Renderer.ValuesPerSecond = ValuesPerSecond;
                 }
                 else
                 {
@@ -59,7 +63,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                     bufferForSeconds = value;
                     OnPropertyChanged();
                     GestureService.ValuesMax = ValuesPerSecond * BufferForSeconds;
-                    Renderer.ValuesMax = ValuesPerSecond * BufferForSeconds;
+                    Renderer.CollectForSeconds = BufferForSeconds;
                 }
                 else
                 {
@@ -96,7 +100,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             ServerURI = "http://192.168.178.30:5000/api/adl/";
             APIConnectorService.ServerURI = ServerURI;
 
-            QueryEachSeconds = 5;
+            QueryEachSeconds = 1;
 
             StartCommand = new Command(Start);
             StopCommand = new Command(Stop);
@@ -145,9 +149,16 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             get { return queryEachSeconds; }
             set
             {
-                queryEachSeconds = value;
-                OnPropertyChanged();
-                APIConnectorService.QueryEachSeconds = QueryEachSeconds;
+                if (value > 0)
+                {
+                    queryEachSeconds = value;
+                    OnPropertyChanged();
+                    APIConnectorService.QueryEachSeconds = QueryEachSeconds;
+                }
+                else
+                {
+                    QueryEachSeconds = 1;
+                }
             }
         }
 

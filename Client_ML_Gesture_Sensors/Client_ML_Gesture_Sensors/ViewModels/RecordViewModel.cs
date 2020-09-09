@@ -13,7 +13,17 @@ namespace Client_ML_Gesture_Sensors.ViewModels
     {
         private GestureService GestureService;
 
-        private Gesture Gesture;
+        private Gesture gesture;
+
+        public Gesture Gesture
+        {
+            get { return gesture; }
+            set
+            {
+                gesture = value;
+                OnPropertyChanged();
+            }
+        }
 
         private APIConnectorService APIConnectorService;
 
@@ -32,7 +42,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                     OnPropertyChanged();
                     GestureService.ValuesPerSecond = ValuesPerSecond;
                     GestureService.ValuesMax = ValuesPerSecond * CollectForSeconds;
-                    Renderer.ValuesMax = ValuesPerSecond * CollectForSeconds;
+                    Renderer.ValuesPerSecond = ValuesPerSecond;
                 }
                 else
                 {
@@ -53,7 +63,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
                     collectForSeconds = value;
                     OnPropertyChanged();
                     GestureService.ValuesMax = ValuesPerSecond * CollectForSeconds;
-                    Renderer.ValuesMax = ValuesPerSecond * CollectForSeconds;
+                    Renderer.CollectForSeconds = CollectForSeconds;
                 }
                 else
                 {

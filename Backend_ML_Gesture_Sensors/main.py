@@ -15,7 +15,11 @@ def saveADL():
 
     dt = datetime.datetime.now()
 
-    filename = jsonDict["WearableType"] + "-" + jsonDict["Username"] + "-" + dt.strftime("%d-%m-%Y-%H-%M-%S")
+    username = jsonDict["Username"]
+    if username is None:
+        username = ""
+
+    filename = jsonDict["WearableType"] + "-" + username + "-" + dt.strftime("%d-%m-%Y-%H-%M-%S")
     with open(filename + '.csv', mode='w', newline='') as ADLFile:
         ADLWriter = csv.writer(ADLFile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -25,7 +29,11 @@ def saveADL():
         tsFirst = tsDict[0]
         tsLast = tsDict[-1]
 
-        ADLWriter.writerow([i, i, tsFirst["TimeStamp"], jsonDict["WearableType"], 'True', 0, tsLast["TimeStamp"], jsonDict["Activity"], jsonDict["Username"], jsonDict["WornWrist"]])
+        activity = jsonDict["Activity"]
+        if activity is None:
+            activity = ""
+
+        ADLWriter.writerow([i, i, tsFirst["TimeStamp"], jsonDict["WearableType"], 'True', 0, tsLast["TimeStamp"], activity, username, jsonDict["WornWrist"]])
 
         for gesturePoint in jsonDict["GesturePointList"]:
             i = i + 1
@@ -33,7 +41,7 @@ def saveADL():
             i = i + 1
             ADLWriter.writerow([i, i, gesturePoint["TimeStamp"], 'GR', gesturePoint["Gyroscope"]["X"], gesturePoint["Gyroscope"]["Y"], gesturePoint["Gyroscope"]["Z"]])
 
-    return 'saved!'
+    return 200
 
 @app.route('/api/adl/predict/', methods=['POST'])
 def predictADL():
@@ -44,7 +52,7 @@ def predictADL():
 
     prediction = get_prediction(jsonDict)
 
-    return prediction
+    return prediction, 200
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port='5000', debug=True)

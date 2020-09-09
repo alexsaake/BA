@@ -40,10 +40,6 @@ namespace Client_ML_Gesture_Sensors.Controls
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
         {
             Renderer.PaintSurface(e.Surface, e.Info);
-            Renderer.PaintAccelerometer(e.Surface, e.Info);
-            Renderer.PaintGyroscope(e.Surface, e.Info);
-            Renderer.PaintGyroscope(e.Surface, e.Info);
-            Renderer.PaintTimestamp(e.Surface, e.Info);
         }
 
         public GraphRenderer Renderer
