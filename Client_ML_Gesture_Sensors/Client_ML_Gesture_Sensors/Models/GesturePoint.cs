@@ -40,21 +40,24 @@ namespace Client_ML_Gesture_Sensors.Models
             }
         }
 
-        public GesturePoint(Accelerometer accelerometer,
-            Gyroscope gyroscope)
+        public GesturePoint(Accelerometer accelerometer, Gyroscope gyroscope)
         {
             TimeSpan tsPOSIX = DateTime.Now - new DateTime(1970, 1, 1);
             TimeStamp = Math.Floor(tsPOSIX.TotalMilliseconds).ToString();
 
-            Accelerometer = new Accelerometer();
-            Accelerometer.X = accelerometer.X;
-            Accelerometer.Y = accelerometer.Y;
-            Accelerometer.Z = accelerometer.Z;
+            Accelerometer = new Accelerometer()
+            {
+                X = accelerometer.X,
+                Y = accelerometer.Y,
+                Z = accelerometer.Z
+            };
 
-            Gyroscope = new Gyroscope();
-            Gyroscope.X = gyroscope.X;
-            Gyroscope.Y = gyroscope.Y;
-            Gyroscope.Z = gyroscope.Z;
+            Gyroscope = new Gyroscope()
+            {
+                X = gyroscope.X,
+                Y = gyroscope.Y,
+                Z = gyroscope.Z
+            };
         }
     }
 }

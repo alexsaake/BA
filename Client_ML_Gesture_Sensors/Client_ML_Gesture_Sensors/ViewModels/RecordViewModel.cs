@@ -89,17 +89,21 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             GestureService = new GestureService();
             Gesture = GestureService.Gesture;
 
-            Renderer = new GraphRenderer();
-            Renderer.Gesture = Gesture;
+            Renderer = new GraphRenderer()
+            {
+                Gesture = Gesture
+            };
 
             valuesPerSecond = 50;
             ValuesPerSecond = 50;
             CollectForSeconds = 12;
             StartAfterSeconds = 1;
 
-            APIConnectorService = new APIConnectorService();
-            APIConnectorService.Gesture = Gesture;
-            ServerURI = "http://192.168.178.30:5000/api/adl/";
+            APIConnectorService = new APIConnectorService()
+            {
+                Gesture = Gesture
+            };
+            ServerURI = "http://192.168.178.30:55000/api/adl/";
             APIConnectorService.ServerURI = ServerURI;
 
             StartCommand = new Command(Start);
@@ -122,7 +126,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -136,7 +140,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -202,7 +206,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -245,7 +249,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 

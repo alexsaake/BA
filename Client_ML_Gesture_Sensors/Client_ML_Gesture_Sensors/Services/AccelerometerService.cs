@@ -7,7 +7,7 @@ namespace Client_ML_Gesture_Sensors.Services
         private static Models.Accelerometer accelerometer;
 
         private const double ConstantG = 9.80665;
-        private float MultiplyBy = 1;
+        private readonly float MultiplyBy = 1;
 
         public AccelerometerService()
         {

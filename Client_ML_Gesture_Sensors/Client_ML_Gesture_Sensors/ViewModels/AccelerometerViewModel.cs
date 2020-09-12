@@ -10,7 +10,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class AccelerometerViewModel : BaseViewModel
     {
-        AccelerometerService accelerometerService;
+        private AccelerometerService accelerometerService;
 
         private Accelerometer accelerometer;
 
@@ -43,7 +43,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -57,7 +57,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
     }

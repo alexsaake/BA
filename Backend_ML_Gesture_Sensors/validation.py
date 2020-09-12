@@ -1,6 +1,5 @@
-#(C) 2020 Florian Full
-
 import json
+import csv
 import datetime
 import pandas as pd
 import joblib, os
@@ -8,7 +7,7 @@ from sklearn.neural_network import MLPClassifier
 import math
 
 def get_prediction(jsonDict):
-
+    #(C) 2020 Florian Full
     pd.set_option('display.max_rows', 1000)
     pd.set_option('display.max_columns', 110)
 
@@ -92,3 +91,33 @@ def get_zero_crossings(values):
         elif a <= 0 and a + 1 > 0:
             b = b + 1
     return b
+
+def saveAsCSV(jsonDict):
+    dt = datetime.datetime.now()
+
+    username = jsonDict["Username"]
+    if username is None:
+        username = ""
+
+    filename = jsonDict["WearableType"] + "-" + username + "-" + dt.strftime("%d-%m-%Y-%H-%M-%S")
+    with open(filename + '.csv', mode='w', newline='') as ADLFile:
+        ADLWriter = csv.writer(ADLFile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        i = 0
+
+        tsDict = jsonDict["GesturePointList"]
+        tsFirst = tsDict[0]["TimeStamp"]
+        tsLast = tsDict[-1]["TimeStamp"]
+        tsDif = int(tsLast) - int(tsFirst)
+
+        activity = jsonDict["Activity"]
+        if activity is None:
+            activity = ""
+
+        ADLWriter.writerow([i, i, tsFirst, jsonDict["WearableType"], 'True', 0, tsDif, activity, username, jsonDict["WornWrist"]])
+
+        for gesturePoint in jsonDict["GesturePointList"]:
+            i = i + 1
+            ADLWriter.writerow([i, i, gesturePoint["TimeStamp"], 'GA', gesturePoint["Accelerometer"]["X"], gesturePoint["Accelerometer"]["Y"], gesturePoint["Accelerometer"]["Z"]])
+            i = i + 1
+            ADLWriter.writerow([i, i, gesturePoint["TimeStamp"], 'GR', gesturePoint["Gyroscope"]["X"], gesturePoint["Gyroscope"]["Y"], gesturePoint["Gyroscope"]["Z"]])

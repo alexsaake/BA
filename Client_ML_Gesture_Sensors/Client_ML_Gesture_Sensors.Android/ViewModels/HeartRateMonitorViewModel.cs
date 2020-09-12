@@ -11,7 +11,7 @@ namespace Client_ML_Gesture_Sensors.Droid.ViewModels
 {
     public class HeartRateMonitorViewModel : BaseViewModel
     {
-        HeartRateMonitorService heartRateMonitorService;
+        private HeartRateMonitorService heartRateMonitorService;
 
         private HeartRateMonitor heartRateMonitor;
 
@@ -44,7 +44,7 @@ namespace Client_ML_Gesture_Sensors.Droid.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -58,7 +58,7 @@ namespace Client_ML_Gesture_Sensors.Droid.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
     }

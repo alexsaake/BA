@@ -13,7 +13,7 @@ namespace Client_ML_Gesture_Sensors.Droid.ViewModels
 {
     public class LightSensorViewModel : BaseViewModel
     {
-        LightSensorService lightSensorService;
+        private LightSensorService lightSensorService;
 
         private LightSensor lightSensor;
 
@@ -46,7 +46,7 @@ namespace Client_ML_Gesture_Sensors.Droid.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -60,7 +60,7 @@ namespace Client_ML_Gesture_Sensors.Droid.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
     }

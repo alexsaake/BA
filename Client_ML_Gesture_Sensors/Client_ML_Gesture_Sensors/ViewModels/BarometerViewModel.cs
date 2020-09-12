@@ -10,7 +10,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class BarometerViewModel : BaseViewModel
     {
-        BarometerService barometerService;
+        private BarometerService barometerService;
 
         private Barometer barometer;
 
@@ -43,7 +43,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -57,7 +57,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
     }

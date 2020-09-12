@@ -40,6 +40,9 @@
     <BundleAssemblies>false</BundleAssemblies>
     <MandroidI18n />
     <AndroidSupportedAbis />
+    <AndroidHttpClientHandlerType>
+    </AndroidHttpClientHandlerType>
+    <AndroidTlsProvider>btls</AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

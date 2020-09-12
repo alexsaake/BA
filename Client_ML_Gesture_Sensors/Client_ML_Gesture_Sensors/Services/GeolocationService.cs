@@ -25,12 +25,7 @@ namespace Client_ML_Gesture_Sensors.Services
         {
             try
             {
-                var location = await Xamarin.Essentials.Geolocation.GetLocationAsync(new GeolocationRequest
-                {
-                    DesiredAccuracy = GeolocationAccuracy.Best,
-                    Timeout = TimeSpan.FromSeconds(30),
-
-                });
+                var location = await Xamarin.Essentials.Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10)));
 
                 if (location != null)
                 {
@@ -41,7 +36,7 @@ namespace Client_ML_Gesture_Sensors.Services
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 

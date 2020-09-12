@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Windows.Input;
 
 using Xamarin.Forms;
 
 using Client_ML_Gesture_Sensors.Models;
 using Client_ML_Gesture_Sensors.Services;
-using System.Windows.Input;
 
 namespace Client_ML_Gesture_Sensors.ViewModels
 {
     public class GeolocationViewModel : BaseViewModel
     {
-        GeolocationService geolocationService;
+        private GeolocationService geolocationService;
 
         private Geolocation geolocation;
 
@@ -43,7 +43,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
 
@@ -57,7 +57,7 @@ namespace Client_ML_Gesture_Sensors.ViewModels
             }
             catch (Exception ex)
             {
-
+                throw ex;
             }
         }
     }
